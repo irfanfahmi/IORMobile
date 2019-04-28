@@ -25,7 +25,8 @@
 
         <!-- <activity android:name=".DetailActivity.DetailActivity" /> -->
         <activity android:name=".detail_laporan.DetailActivity" />
-        <activity android:name=".create_laporan.CreateIORActivity"></activity>
+        <activity android:name=".create_laporan.CreateIORActivity" />
+        <activity android:name=".profil_pegawai.ProfilActivity"></activity>
     </application>
 
 </manifest>

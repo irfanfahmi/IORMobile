@@ -37,6 +37,8 @@
             app:layout_constraintTop_toBottomOf="@id/iv_laporan">
 
             <TextView
+                android:fontFamily="@font/opensans_bold"
+                android:textColor="@color/colorWhite"
                 android:id="@+id/text1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,6 +52,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="53/99/2019"
+                android:fontFamily="@font/opensans_reguler"
+                android:textColor="@color/colorWhite"
                 app:layout_constraintLeft_toRightOf="@id/text1"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -61,6 +65,9 @@
                 android:layout_marginTop="8dp"
                 android:ellipsize="end"
                 android:lines="2"
+                android:fontFamily="@font/opensans_bold"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -86,10 +93,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Send. To : "
+                android:fontFamily="@font/opensans_bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:fontFamily="@font/opensans_reguler"
                 android:id="@+id/tv_sendTo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -105,6 +114,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="Reff : "
+                android:fontFamily="@font/opensans_bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text2" />
 
@@ -114,6 +124,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
+                android:fontFamily="@font/opensans_reguler"
                 app:layout_constraintLeft_toRightOf="@id/text3"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_sendTo"
@@ -123,6 +134,7 @@
                 android:id="@+id/text4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/opensans_bold"
                 android:text="Category : "
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text3" />
@@ -130,6 +142,7 @@
             <TextView
                 android:id="@+id/tv_category"
                 android:layout_width="0dp"
+                android:fontFamily="@font/opensans_reguler"
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toRightOf="@id/text4"
                 app:layout_constraintRight_toRightOf="parent"
@@ -141,6 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sub Category : "
+                android:fontFamily="@font/opensans_bold"
                 android:textColor="#3F51B5"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text4" />
@@ -150,6 +164,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="#3F51B5"
+                android:fontFamily="@font/opensans_reguler"
                 app:layout_constraintLeft_toRightOf="@id/text5"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_category"
@@ -160,12 +175,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Risk. Index : "
+                android:fontFamily="@font/opensans_bold"
                 android:textColor="#3F51B5"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text5" />
 
             <TextView
                 android:id="@+id/tv_risk_index"
+                android:fontFamily="@font/opensans_reguler"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="#3F51B5"
@@ -179,12 +196,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Reported. By : "
+                android:fontFamily="@font/opensans_bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text6" />
 
             <TextView
                 android:id="@+id/tv_reporter"
                 android:layout_width="0dp"
+                android:fontFamily="@font/opensans_reguler"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
@@ -198,11 +217,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Est. Finish : "
+                android:fontFamily="@font/opensans_bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text7" />
 
             <TextView
                 android:id="@+id/tv_est_finish"
+                android:fontFamily="@font/opensans_reguler"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toRightOf="@id/text8"
@@ -217,8 +238,9 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/opensans_bold"
             app:layout_constraintTop_toBottomOf="@id/wrap_content"
-            android:background="#555252"
+            android:background="#19000000"
             android:paddingLeft="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp">
@@ -255,6 +277,7 @@
 
             <TextView
                 android:id="@+id/text9"
+                android:fontFamily="@font/opensans_bold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -268,6 +291,7 @@
                 android:id="@+id/tv_insertBy"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/opensans_bold"
                 app:layout_constraintLeft_toRightOf="@id/iv_reporter"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginLeft="8dp"
@@ -279,6 +303,7 @@
 
             <TextView
                 android:id="@+id/tv_desc"
+                android:fontFamily="@font/opensans_reguler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/iv_reporter"
@@ -296,12 +321,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/wrap_desc"
-            android:background="#555252"
+            android:background="#19000000"
             android:paddingLeft="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp">
 
             <TextView
+                android:fontFamily="@font/opensans_bold"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Status"
@@ -322,6 +348,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/wrap_stat">
             <TextView
+                android:fontFamily="@font/opensans_bold"
                 android:id="@+id/tv_stat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

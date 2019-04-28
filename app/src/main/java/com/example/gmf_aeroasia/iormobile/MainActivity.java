@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         btn_IOR_Recived.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Masuk Berhasil", Toast.LENGTH_SHORT).show();
                 Intent i= new Intent(MainActivity.this,DetailActivity.class);
                 startActivity(i);
             }

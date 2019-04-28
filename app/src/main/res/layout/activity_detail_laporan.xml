@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_laporan"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="H, 1:1"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/wrap_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#3F51B5"
+            android:orientation="horizontal"
+            android:paddingLeft="12dp"
+            android:paddingTop="4dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_laporan">
+
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IOR. Number : "
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/tv_number_ior"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_number_ior"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="53/99/2019"
+                app:layout_constraintLeft_toRightOf="@id/text1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_title_ior"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:lines="2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text1"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wrap_title">
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Send. To : "
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_sendTo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/text2"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="TBH" />
+
+            <TextView
+                android:id="@+id/text3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Reff : "
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text2" />
+
+            <TextView
+                android:id="@+id/tv_reff"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                app:layout_constraintLeft_toRightOf="@id/text3"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_sendTo"
+                tools:text="Manual HSE dan HSE-4-03 Pengelolaan limbah B3" />
+
+            <TextView
+                android:id="@+id/text4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category : "
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text3" />
+
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/text4"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_reff"
+                tools:text="Individual Factor" />
+
+            <TextView
+                android:id="@+id/text5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sub Category : "
+                android:textColor="#3F51B5"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text4" />
+
+            <TextView
+                android:id="@+id/tv_sub_category"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="#3F51B5"
+                app:layout_constraintLeft_toRightOf="@id/text5"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_category"
+                tools:text="Situation Awareness" />
+
+            <TextView
+                android:id="@+id/text6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Risk. Index : "
+                android:textColor="#3F51B5"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text5" />
+
+            <TextView
+                android:id="@+id/tv_risk_index"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="#3F51B5"
+                app:layout_constraintLeft_toRightOf="@id/text6"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_sub_category"
+                tools:text="3C" />
+
+            <TextView
+                android:id="@+id/text7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reported. By : "
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text6" />
+
+            <TextView
+                android:id="@+id/tv_reporter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:layout_constraintLeft_toRightOf="@id/text7"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_risk_index"
+                tools:text="Masagus Halim Taufik" />
+
+            <TextView
+                android:id="@+id/text8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Est. Finish : "
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text7" />
+
+            <TextView
+                android:id="@+id/tv_est_finish"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/text8"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_reporter"
+                tools:text="30 April 2019" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/wrap_title_desc"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/wrap_content"
+            android:background="#555252"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Description"
+                android:textStyle="bold"
+                android:textColor="#3F51B5"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/wrap_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/wrap_title_desc"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <ImageView
+                android:id="@+id/iv_reporter"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_account_circle_primary_24dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_insertBy"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintLeft_toRightOf="@id/iv_reporter"
+                android:text="Insert. By : "/>
+
+            <TextView
+                android:id="@+id/tv_insertBy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/iv_reporter"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="@id/iv_reporter"
+                tools:text="582207/Masagus Halim Taufik/TUK-1"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/tv_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/iv_reporter"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="16dp"
+                android:textColor="#3F51B5"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."/>
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/wrap_stat"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/wrap_desc"
+            android:background="#555252"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Status"
+                android:textStyle="bold"
+                android:textColor="#3F51B5"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+        <android.support.design.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#12E01A"
+            app:cardCornerRadius="4dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wrap_stat">
+            <TextView
+                android:id="@+id/tv_stat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Progress"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+        </android.support.design.card.MaterialCardView>
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v4.widget.NestedScrollView>
+

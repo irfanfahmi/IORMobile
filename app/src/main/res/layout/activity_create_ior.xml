@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:title="Create IOR"
+        app:titleTextColor="@color/colorWhite">
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/opensans_bold"
+                android:text="IOR Form"
+                android:textSize="24sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/opensans_bold"
+                android:text="To"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text1" />
+
+            <Spinner
+                android:id="@+id/sp_to"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/cb_hide"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/cb_hide"
+                app:layout_constraintTop_toBottomOf="@id/text2" />
+
+            <CheckBox
+                android:id="@+id/cb_hide"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                android:fontFamily="@font/opensans_bold"
+                android:gravity="end|center"
+                android:text="Hide Reporter"
+                app:layout_constraintLeft_toRightOf="@id/sp_to"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/sp_to" />
+
+            <TextView
+                android:id="@id/text3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Subject"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cb_hide" />
+
+            <EditText
+                android:id="@+id/et_subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Subject"
+                app:layout_constraintTop_toBottomOf="@id/text3" />
+
+            <TextView
+                android:id="@id/text4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Category"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_subject" />
+
+            <Spinner
+                android:id="@+id/sp_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text4" />
+
+            <TextView
+                android:id="@id/text5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Sub. 1 Category"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sp_category" />
+
+            <Spinner
+                android:id="@+id/sp_sub1category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text5" />
+
+            <TextView
+                android:id="@id/text6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Sub. 2 Category"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sp_sub1category" />
+
+            <Spinner
+                android:id="@+id/sp_sub2category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text6" />
+
+            <TextView
+                android:id="@id/text7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Ambiguity"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sp_sub2category" />
+
+            <RadioGroup
+                android:id="@+id/wrap_rb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/text7">
+
+                <RadioButton
+                    android:id="@+id/rb_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yes" />
+
+                <RadioButton
+                    android:id="@+id/rb_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/text8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Occ. Date"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/wrap_rb" />
+
+            <EditText
+                android:id="@+id/et_occ_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:hint="Occ. Date"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text8" />
+
+            <TextView
+                android:id="@id/text9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Esstimated. Finish"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_occ_date" />
+
+            <EditText
+                android:id="@+id/et_est_finish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:hint="Esstimated Finish"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text9" />
+
+            <ImageView
+                android:id="@+id/iv_report"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background"
+                app:layout_constraintDimensionRatio="16:9"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_est_finish" />
+
+            <Button
+                android:id="@+id/bt_photo"
+                android:layout_width="0dp"
+                android:text="PHOTO"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_menu_camera"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/bt_gallery"
+                app:layout_constraintTop_toBottomOf="@id/iv_report" />
+
+            <Button
+                android:id="@+id/bt_gallery"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Gallery"
+                android:drawableLeft="@drawable/ic_menu_gallery"
+                app:layout_constraintLeft_toRightOf="@id/bt_photo"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_report" />
+
+            <TextView
+                android:id="@+id/text10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Level. Type"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bt_photo" />
+
+            <EditText
+                android:id="@+id/et_lvl_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Level Type"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text10" />
+
+            <TextView
+                android:id="@+id/text11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Risk. Index"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_lvl_type" />
+
+            <TextView
+                android:id="@+id/text12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Probability of Occurrence"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text11" />
+
+            <Spinner
+                android:id="@+id/sp_risk_index"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text12" />
+
+            <TextView
+                android:id="@+id/text13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Probability of Occurrence"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sp_risk_index" />
+
+            <Spinner
+                android:id="@+id/sp_catastrophic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text13"></Spinner>
+
+            <TextView
+                android:id="@+id/text14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Descriptions"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sp_catastrophic" />
+
+            <EditText
+                android:id="@+id/et_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                android:maxLines="4"
+                android:minLines="4"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text14" />
+
+            <Button
+                android:id="@+id/bt_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/secondaryColor"
+                android:text="Submit"
+                android:textColor="@color/primaryTextColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_desc" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

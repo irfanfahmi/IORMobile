@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/asd" android:title="Home" android:icon="@drawable/ic_arrow_back_white_24dp" />
+    <item android:id="@+id/sd" android:title="IOR Recive" android:icon="@drawable/ic_arrow_back_white_24dp" />
+    <item android:id="@+id/yyt" android:title="IOR Send" android:icon="@drawable/ic_arrow_back_white_24dp" />
+    <item android:id="@+id/tsd" android:title="Non IOR" android:icon="@drawable/ic_arrow_back_white_24dp" />
+
+</menu>

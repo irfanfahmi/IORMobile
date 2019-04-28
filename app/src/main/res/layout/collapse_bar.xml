@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#ffffff">
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/colorPrimary"
+        app:rippleColor="@color/colorPrimary"
+        android:src="@drawable/ic_add_white_24dp" />
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_marginTop="90dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/opensans_bold"
+                    android:textSize="16sp"
+                    android:text="Welcome"/>
+                <TextView
+                    android:id="@+id/nama_pegawai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/opensans_bold"
+                    android:textSize="20sp"
+                    android:text="Nama Pegawai"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:layout_gravity="right">
+                <ImageView
+                    android:outlineSpotShadowColor="@color/colorPrimary"
+                    android:outlineAmbientShadowColor="@color/colorPrimaryDark"
+                    android:layout_gravity="bottom"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/ic_account_circle_primary_24dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_ior_recived"
+            android:drawableRight="@drawable/ic_inbox_primary_24dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rect_btn_ior_blue"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:fontFamily="@font/opensans_bold"
+            android:textColor="#767676"
+            android:gravity="left|center"
+            android:padding="16dp"
+            android:text="IOR Recived"/>
+        <Button
+            android:drawableRight="@drawable/ic_send_primary_24dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rect_btn_ior_blue"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:fontFamily="@font/opensans_bold"
+            android:textColor="#767676"
+            android:gravity="left|center"
+            android:padding="16dp"
+            android:text="IOR Send"/>
+        <Button
+            android:drawableRight="@drawable/ic_non_primary_24dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rect_btn_ior_blue"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:fontFamily="@font/opensans_bold"
+            android:textColor="#767676"
+            android:gravity="left|center"
+            android:padding="16dp"
+            android:text="IOR Recived"/>
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/opensans_bold"
+            android:textSize="16sp"
+            android:text="History"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/opensans_bold"
+            android:textSize="16sp"
+            android:text="History"/>
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/opensans_bold"
+            android:textSize="16sp"
+            android:text="History"/>
+    </LinearLayout>
+
+</ScrollView>
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarid"
+
+        app:title="IOR Mobile"
+        app:titleTextColor="@color/colorWhite"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:fitsSystemWindows="true"
+        app:layout_collapseMode="pin"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+
+    </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <!--<android.support.design.widget.AppBarLayout-->
+        <!--android:id="@+id/appbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="250dp"-->
+        <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">-->
+
+
+            <!--<android.support.v7.widget.Toolbar-->
+                <!--android:id="@+id/toolbarid"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="?attr/actionBarSize"-->
+                <!--android:fitsSystemWindows="true"-->
+                <!--app:layout_collapseMode="pin"-->
+                <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light">-->
+
+
+            <!--</android.support.v7.widget.Toolbar>-->
+
+
+
+    <!--</android.support.design.widget.AppBarLayout>-->
+
+
+</android.support.design.widget.CoordinatorLayout>

@@ -17,6 +17,7 @@
         android:layout_height="30dp"
         android:background="@drawable/ic_launcher_background"/>
         <TextView
+            android:id="@+id/nav_nm_pegawai"
             android:fontFamily="@font/opensans_bold"
             android:textColor="@color/colorWhite"
             android:textSize="14dp"
@@ -26,6 +27,7 @@
             android:text="Nama Pegawai"/>
 
         <TextView
+            android:id="@+id/nav_user_pegawai"
             android:fontFamily="@font/opensans_reguler"
             android:textColor="@color/colorWhite"
             android:textSize="10dp"
@@ -49,6 +51,7 @@
                 android:text="Unit : "/>
 
             <TextView
+                android:id="@+id/nav_unit_pegawai"
                 android:fontFamily="@font/opensans_reguler"
                 android:textColor="@color/colorWhite"
                 android:textSize="10dp"

@@ -178,8 +178,8 @@
                 android:id="@+id/et_occ_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
                 android:hint="Occ. Date"
+                android:editable="false"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text8" />
 
@@ -197,7 +197,7 @@
                 android:id="@+id/et_est_finish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
+                android:editable="false"
                 android:hint="Esstimated Finish"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text9" />
@@ -244,8 +244,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/bt_photo" />
 
-            <EditText
-                android:id="@+id/et_lvl_type"
+            <Spinner
+                android:id="@+id/sp_lvl_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Level Type"
@@ -260,7 +260,7 @@
                 android:fontFamily="@font/opensans_bold"
                 android:text="Risk. Index"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_lvl_type" />
+                app:layout_constraintTop_toBottomOf="@id/sp_lvl_type" />
 
             <TextView
                 android:id="@+id/text12"

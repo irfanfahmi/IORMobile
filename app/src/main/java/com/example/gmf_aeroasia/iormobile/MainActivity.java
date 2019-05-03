@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.gmf_aeroasia.iormobile.Login.LoginActivity;
 import com.example.gmf_aeroasia.iormobile.create_laporan.CreateIORActivity;
 import com.example.gmf_aeroasia.iormobile.detail_laporan.DetailActivity;
+import com.example.gmf_aeroasia.iormobile.profil_pegawai.ProfilActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout mDrawer;
@@ -166,5 +167,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     });
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
+    }
+
+    public void klikprofil(View view) {
+        Intent intent = new Intent(MainActivity.this, ProfilActivity.class);
+        startActivity(intent);
     }
 }

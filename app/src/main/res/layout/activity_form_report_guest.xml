@@ -58,7 +58,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-                        <android.support.design.widget.TextInputEditText
+                        <EditText
+                            android:id="@+id/name_report"
                             android:layout_marginTop="2dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -68,7 +69,8 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <android.support.design.widget.TextInputEditText
+                        <EditText
+                            android:id="@+id/email_report"
                             android:layout_marginTop="2dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -79,7 +81,8 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <android.support.design.widget.TextInputEditText
+                        <EditText
+                            android:id="@+id/company_report"
                             android:layout_marginTop="2dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -89,7 +92,8 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <android.support.design.widget.TextInputEditText
+                        <EditText
+                            android:id="@+id/unit_report"
                             android:layout_marginTop="2dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -150,7 +154,8 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <android.support.design.widget.TextInputEditText
+                        <EditText
+                            android:id="@+id/sub_report"
                             android:layout_marginTop="2dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -160,7 +165,8 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <android.support.design.widget.TextInputEditText
+                        <EditText
+                            android:id="@+id/ref_report"
                             android:layout_marginTop="2dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -180,14 +186,17 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
                             <RadioGroup
+                                android:id="@+id/radiogrup_report"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
                                 <RadioButton
+                                    android:id="@+id/r_yes_report"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Yes"/>
                                 <RadioButton
+                                    android:id="@+id/r_no_report"
                                     android:layout_marginLeft="30dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -197,22 +206,13 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <android.support.design.widget.TextInputEditText
+                        <EditText
+                            android:id="@+id/date_report"
                             android:layout_marginTop="2dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/opensans_reguler"
                             android:hint="Occurance Date"/>
-                    </android.support.design.widget.TextInputLayout>
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <android.support.design.widget.TextInputEditText
-                            android:layout_marginTop="2dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/opensans_reguler"
-                            android:hint="Refference"/>
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -220,7 +220,8 @@
                         android:layout_height="wrap_content"
                         app:counterEnabled="true"
                         app:counterMaxLength="300">
-                        <android.support.design.widget.TextInputEditText
+                        <EditText
+                            android:id="@+id/des_report"
                             android:layout_marginTop="2dp"
                             android:layout_width="match_parent"
                             android:inputType="textMultiLine"
@@ -230,6 +231,15 @@
                             android:fontFamily="@font/opensans_reguler"
                             android:hint="IOR Description"/>
                     </android.support.design.widget.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/submit_report"
+                        android:layout_marginTop="10dp"
+                        android:text="Submit"
+                        android:textColor="@color/colorWhite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rect_yellow"/>
 
                 </LinearLayout>
 

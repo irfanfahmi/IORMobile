@@ -168,8 +168,9 @@ public class ReportGuestActivity extends AppCompatActivity {
                         Bitmap bitmap = PhotoLoader.init().from(imagePath).requestSize(128, 128).getBitmap();
 
                         final String encodedString1 = ImageBase64.encode(bitmap);
-                        //String url = "http://muslim.labsi-telkomuniversity.com/api/masjid";
-                        String url = "http://appro.probolinggokab.go.id/protokolapp/modul_lokasi/lok_masjid.php";
+
+                        String url = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/input_guest_report.php";
+
 
                         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                                 new Response.Listener<String>() {

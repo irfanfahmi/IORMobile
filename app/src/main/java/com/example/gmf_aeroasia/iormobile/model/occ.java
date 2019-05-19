@@ -14,6 +14,8 @@ public class occ implements Serializable {
     public String occ_category;
     public String occ_sub_category;
     public String occ_send_to;
+    public String occ_estfinish;
+    public String occ_Insertby;
 
     public String created_by_name;
     public String occ_status;

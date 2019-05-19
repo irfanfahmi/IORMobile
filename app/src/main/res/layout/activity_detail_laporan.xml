@@ -295,23 +295,26 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="4dp"
                     android:fontFamily="@font/opensans_bold"
                     android:text="Insert. By : "
                     app:layout_constraintBottom_toTopOf="@id/tv_insertBy"
                     app:layout_constraintLeft_toRightOf="@id/iv_reporter"
-                    app:layout_constraintRight_toRightOf="parent" />
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_insertBy"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="4dp"
                     android:ellipsize="end"
                     android:fontFamily="@font/opensans_bold"
                     android:maxLines="1"
                     app:layout_constraintBottom_toBottomOf="@id/iv_reporter"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintLeft_toRightOf="@id/iv_reporter"
                     app:layout_constraintRight_toRightOf="parent"
                     tools:text="582207/Masagus Halim Taufik/TUK-1" />

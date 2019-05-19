@@ -1,11 +1,14 @@
 package com.example.gmf_aeroasia.iormobile;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -61,6 +64,8 @@ public class ReportGuestActivity extends AppCompatActivity {
     Button bt_photo,bt_galllery,bt_submit;
     ProgressDialog dialogLoading;
 
+    @TargetApi(Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,11 +89,19 @@ public class ReportGuestActivity extends AppCompatActivity {
         linearMain = (LinearLayout)findViewById(R.id.linearMain);
         bt_submit = (Button)findViewById(R.id.submit_report);
 
+        galleryPhoto = new GalleryPhoto(getApplicationContext());
+        cameraPhoto = new CameraPhoto(getApplicationContext());
 
         final MyCommand myCommand = new MyCommand(getApplicationContext());
 
         ActivityCompat.requestPermissions(ReportGuestActivity.this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
+
+        ActivityCompat.requestPermissions(ReportGuestActivity.this,
+                new String[]{Manifest.permission.CAMERA},2);
+
+
+
         bt_galllery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,9 +114,12 @@ public class ReportGuestActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
+
                     startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
                     cameraPhoto.addToGallery();
                 } catch (IOException e) {
+                    Log.d("Photo : ", e.toString());
+
                     Toast.makeText(getApplicationContext(),
                             "Something Wrong while taking photos"+e, Toast.LENGTH_SHORT).show();
                 }

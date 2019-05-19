@@ -132,7 +132,7 @@ public class CreateIORActivity extends AppCompatActivity {
     }
 
     public void getDataSpinner() {
-        String ip = "192.168.1.6";
+        String ip = getApplicationContext().getString(R.string.ip_default);
         final String[] listUrl = new String[]{
                 "http://"+ip+"/API_IOR/unit/Read.php",
                 "http://"+ip+"/API_IOR/category/Read.php",

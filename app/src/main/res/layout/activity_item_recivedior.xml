@@ -22,6 +22,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_nama_pengirim"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/opensans_bold"
@@ -44,6 +45,7 @@
             android:padding="16dp">
 
             <TextView
+                android:id="@+id/tv_occ_subject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/opensans_bold"
@@ -57,6 +59,7 @@
             android:layout_height="wrap_content">
 
             <Button
+                android:id="@+id/bt_status"
                 android:layout_width="60dp"
                 android:layout_height="20dp"
                 android:layout_alignParentTop="true"
@@ -96,6 +99,7 @@
                 android:background="@drawable/rect_sshadow_black" />
 
             <TextView
+                android:id="@+id/tv_no_ior"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -130,6 +134,7 @@
                     tools:ignore="UnknownId" />
 
                 <TextView
+                    android:id="@+id/tv_sendto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/opensans_bold"
@@ -142,6 +147,7 @@
 
 
             <TextView
+                android:id="@+id/tv_tgl_occ"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"

@@ -19,9 +19,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.gmf_aeroasia.iormobile.IOR_Recived.ior_recived;
 import com.example.gmf_aeroasia.iormobile.Login.LoginActivity;
 import com.example.gmf_aeroasia.iormobile.create_laporan.CreateIORActivity;
-import com.example.gmf_aeroasia.iormobile.detail_laporan.DetailActivity;
 import com.example.gmf_aeroasia.iormobile.profil_pegawai.ProfilActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         btn_IOR_Recived.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i= new Intent(MainActivity.this,DetailActivity.class);
+                Intent i= new Intent(MainActivity.this,ior_recived.class);
                 startActivity(i);
             }
         });

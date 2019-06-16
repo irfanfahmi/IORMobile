@@ -41,6 +41,10 @@ public class Unit extends RealmObject {
         RealmQuery<Unit> query = realm.where(Unit.class);
         return query.findAll();
     }
+    public static RealmResults<Unit> getFirstUnit(Realm realm){
+        RealmQuery<Unit> query = realm.where(Unit.class);
+        return query.equalTo("unit", "AMQMM").findAll();
+    }
 
     @Override
     public String toString() {

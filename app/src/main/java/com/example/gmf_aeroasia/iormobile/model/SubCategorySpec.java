@@ -37,8 +37,13 @@ public class SubCategorySpec extends RealmObject {
     }
 
     public static RealmResults<SubCategorySpec> getSubCategorySpecById(Realm realm, String id){
+        String mId = id;
         RealmQuery<SubCategorySpec> query = realm.where(SubCategorySpec.class);
-        return query.equalTo("cat_sub_id", id).findAll();
+        if(id != null){
+            return query.equalTo("cat_sub_id", id).findAll();
+        }else{
+            return query.findAll();
+        }
     }
 
     @Override

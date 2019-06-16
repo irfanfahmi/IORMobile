@@ -39,11 +39,11 @@ public class LoginActivity extends AppCompatActivity {
     ProgressDialog dialogLoading;
     SharedPreferences sharedP;
     SharedPreferences.Editor shareEdit;
-    final String PREF = "Keypref";
-    final String KEY_NAME = "name";
-    final String KEY_ID = "id";
-    final String KEY_UNIT = "unit";
-    final String KEY_USER = "username";
+    public static final String PREF = "Keypref";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_ID = "id";
+    public static final String KEY_UNIT = "unit";
+    public static final String KEY_USER = "username";
 
 
     @Override

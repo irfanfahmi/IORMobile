@@ -1,11 +1,19 @@
 package com.example.gmf_aeroasia.iormobile.create_laporan;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -14,23 +22,41 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.example.gmf_aeroasia.iormobile.Login.LoginActivity;
 import com.example.gmf_aeroasia.iormobile.MySingleton2;
 import com.example.gmf_aeroasia.iormobile.R;
 import com.example.gmf_aeroasia.iormobile.adapter.GeneralSpinnerAdapter;
 import com.example.gmf_aeroasia.iormobile.model.Category;
+import com.example.gmf_aeroasia.iormobile.model.Probability;
+import com.example.gmf_aeroasia.iormobile.model.Severity;
 import com.example.gmf_aeroasia.iormobile.model.SubCategory;
 import com.example.gmf_aeroasia.iormobile.model.SubCategorySpec;
 import com.example.gmf_aeroasia.iormobile.model.Unit;
+import com.kosalgeek.android.photoutil.CameraPhoto;
+import com.kosalgeek.android.photoutil.GalleryPhoto;
+import com.kosalgeek.android.photoutil.ImageBase64;
+import com.kosalgeek.android.photoutil.ImageLoader;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +66,8 @@ import io.realm.RealmConfiguration;
 
 public class CreateIORActivity extends AppCompatActivity {
 
+    private static final String TAG = "CreateIORActivity";
+    private static final String CODE_SUCCES = "201";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -86,12 +114,34 @@ public class CreateIORActivity extends AppCompatActivity {
     public Calendar calendar;
     public SimpleDateFormat dateFormat;
     public DatePickerDialog datePickerDialog;
-    public GeneralSpinnerAdapter spinnerAdapterTo, spinnerAdapterCategory, spinnerAdapterSubCategory, spinnerAdapterSub2Category;
 
+    GeneralSpinnerAdapter<Unit> spinnerAdapterUnit;
+    GeneralSpinnerAdapter<Category> spinnerAdapterCategory;
+    GeneralSpinnerAdapter<SubCategory> spinnerAdapterSubCategory;
+    GeneralSpinnerAdapter<SubCategorySpec> spinnerAdapterSub2Category;
+    GeneralSpinnerAdapter<Severity> spinnerAdapterSeverity;
+    GeneralSpinnerAdapter<Probability> spinnerAdapterProbability;
+
+    Unit unit;
     Category category;
     SubCategory subCategory;
+    SubCategorySpec subCategorySpec;
+    Probability probability;
+    Severity severity;
 
-    private static final String TAG = "CreateIORActivity";
+
+    CameraPhoto cameraPhoto;
+    GalleryPhoto galleryPhoto;
+    RequestQueue queue;
+    ProgressDialog dialogLoading;
+    SharedPreferences sharedP;
+
+    String path = null;
+    String stringImage, stringAmbiguity, hideReport;
+    int selectedRadio;
+
+    private static final int CAMERA = 1001;
+    private static final int GALLERY = 1002;
 
 
     @Override
@@ -99,13 +149,73 @@ public class CreateIORActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_ior);
         ButterKnife.bind(this);
-        initRealm();
 
+        initRealm();
+        showButtonBack();
+        getPref();
         getDataSpinner();
         initSpinnerUnit();
         initSpinnerCategory();
-        initSpinnerSubCategory("01");
-        initSpinnerSubCategorySpec("1");
+        initSpinnerSeverity();
+        initSpinnerProbability();
+        initSpinnerLvlType();
+    }
+    void initCameraPhoto(){
+        cameraPhoto = new CameraPhoto(this);
+        try {
+            startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA);
+            cameraPhoto.addToGallery();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case CAMERA:
+                    path = cameraPhoto.getPhotoPath();
+                    Glide.with(this)
+                            .load(path)
+                            .fitCenter()
+                            .into(ivReport);
+                    break;
+                case GALLERY:
+                    galleryPhoto.setPhotoUri(data.getData());
+                    path = galleryPhoto.getPath();
+                    Glide.with(this)
+                            .load(path)
+                            .fitCenter()
+                            .into(ivReport);
+                    break;
+            }
+        }
+    }
+
+    void showButtonBack(){
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+    }
+
+    void getPref(){
+        sharedP = getSharedPreferences(LoginActivity.PREF, Context.MODE_PRIVATE);
+        if(sharedP == null){
+            Log.d(TAG, "getPref: SharedPref Kosong");
+        }else{
+            Log.d(TAG, "getPref Date: "+sharedP.getAll().toString());
+        }
+    }
+    void initGalleryPhoto(){
+        galleryPhoto = new GalleryPhoto(this);
+        startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY);
     }
 
     void initRealm(){
@@ -120,12 +230,13 @@ public class CreateIORActivity extends AppCompatActivity {
 
     public DatePickerDialog datePicker() {
         calendar = Calendar.getInstance();
-        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 calendar.set(year, month, dayOfMonth);
                 etOccDate.setText(dateFormat.format(calendar.getTime()));
+                etEstFinish.setText(dateFormat.format(calendar.getTime()));
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         return datePickerDialog;
@@ -137,8 +248,17 @@ public class CreateIORActivity extends AppCompatActivity {
                 "http://"+ip+"/API_IOR/unit/Read.php",
                 "http://"+ip+"/API_IOR/category/Read.php",
                 "http://"+ip+"/API_IOR/subcategory/Read.php",
-                "http://"+ip+"/API_IOR/subcategoryspec/Read.php"};
-        final Class[] listClass = new Class[]{Unit.class, Category.class, SubCategory.class, SubCategorySpec.class};
+                "http://"+ip+"/API_IOR/subcategoryspec/Read.php",
+                "http://"+ip+"/API_IOR/severity/Read.php",
+                "http://"+ip+"/API_IOR/probability/Read.php",
+        };
+        final Class[] listClass = new Class[]{
+                Unit.class,
+                Category.class,
+                SubCategory.class,
+                SubCategorySpec.class,
+                Severity.class,
+                Probability.class};
         for(int i = 0; i < listUrl.length; i++){
             final int finalI = i;
             StringRequest request = new StringRequest(Request.Method.GET, listUrl[i], new Response.Listener<String>() {
@@ -168,59 +288,71 @@ public class CreateIORActivity extends AppCompatActivity {
     }
 
     public void initSpinnerUnit() {
-        spinnerAdapterTo = new GeneralSpinnerAdapter<Unit>(this, Unit.getAllUnit(realm)) {
+        spinnerAdapterUnit = new GeneralSpinnerAdapter<Unit>(this, Unit.getAllUnit(realm)) {
             @Override
             public String getEntryText(int position) {
-                return getData().get(position).getUnit();
+                unit = getData().get(position);
+                return unit.getUnit();
             }
         };
-        spTo.setAdapter(spinnerAdapterTo);
+        spTo.setAdapter(spinnerAdapterUnit);
+        spTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                unit = spinnerAdapterUnit.getData().get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     public void initSpinnerCategory(){
         spinnerAdapterCategory = new GeneralSpinnerAdapter<Category>(this, Category.getAllCategory(realm)) {
             @Override
             public String getEntryText(int position) {
-                category = getData().get(position);
-                return category.getCat_name();
+                return getData().get(position).getCat_name();
             }
+
         };
         spCategory.setAdapter(spinnerAdapterCategory);
-//        spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                spinnerAdapterSubCategory.updateData(SubCategory.getSubCategoryById(realm, category.getCat_id()));
-//                Toast.makeText(CreateIORActivity.this, ""+category.getCat_id(), Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
+        spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                category = spinnerAdapterCategory.getItem(position);
+                initSpinnerSubCategory("0"+category.getCat_id());
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     public void initSpinnerSubCategory(String id){
         spinnerAdapterSubCategory = new GeneralSpinnerAdapter<SubCategory>(this, SubCategory.getSubCategoryById(realm, id)) {
             @Override
             public String getEntryText(int position) {
-                subCategory = getData().get(position);
-                return subCategory.getCat_sub_desc();
+                return getData().get(position).getCat_sub_desc();
             }
         };
         spSub1category.setAdapter(spinnerAdapterSubCategory);
-//        spSub1category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                spinnerAdapterSub2Category.updateData(SubCategorySpec.getSubCategorySpecById(realm, subCategory.getCat_sub_id()));
-//                Toast.makeText(CreateIORActivity.this, ""+subCategory.getCat_id(), Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
+        spSub1category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                subCategory = spinnerAdapterSubCategory.getData().get(position);
+                initSpinnerSubCategorySpec(subCategory.getCat_sub_id());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     public void initSpinnerSubCategorySpec(String id){
@@ -231,6 +363,215 @@ public class CreateIORActivity extends AppCompatActivity {
             }
         };
         spSub2category.setAdapter(spinnerAdapterSub2Category);
+        spSub2category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                subCategorySpec = spinnerAdapterSub2Category.getData().get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    public void initSpinnerSeverity(){
+        spinnerAdapterSeverity = new GeneralSpinnerAdapter<Severity>(this, Severity.getAllSeverity(realm)) {
+            @Override
+            public String getEntryText(int position) {
+                return getData().get(position).getSeverity_value();
+            }
+        };
+        spRiskIndex.setAdapter(spinnerAdapterSeverity);
+        spRiskIndex.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                severity = spinnerAdapterSeverity.getData().get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    public void initSpinnerProbability(){
+        spinnerAdapterProbability = new GeneralSpinnerAdapter<Probability>(this, Probability.getAllProbability(realm)) {
+            @Override
+            public String getEntryText(int position) {
+                return getData().get(position).getProbability_value();
+            }
+        };
+        spCatastrophic.setAdapter(spinnerAdapterProbability);
+        spCatastrophic.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                probability = spinnerAdapterProbability.getData().get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    public void initSpinnerLvlType(){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.arr_lvl_type, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spLvlType.setAdapter(adapter);
+    }
+
+    boolean validate(){
+        boolean valid = true;
+        String send_to = unit.getUnit();
+        String occ_sub = etSubject.getText().toString();
+        String occ_category = category.getCat_id();
+        String sub_category = subCategory.getCat_sub_id();
+        String category_spec = subCategorySpec.getCat_sub_spec_id();
+        String ambiguity = stringAmbiguity;
+        String date = etOccDate.getText().toString();
+        String estfinish = etEstFinish.getText().toString();
+        String attachment = stringImage;
+        String lvl_type = spLvlType.getSelectedItem().toString();
+        String risk_index = unit.getUnit();
+        String detail = etDesc.getText().toString();
+
+        if(send_to.isEmpty()){
+            ((TextView) spTo.getSelectedView()).setError("");
+            valid = false;
+        }
+        if(occ_sub.isEmpty()){
+            etSubject.setError("");
+            valid = false;
+        }
+        if(occ_category.isEmpty()){
+            ((TextView) spCategory.getSelectedView()).setError("");
+            valid = false;
+        }
+        if(sub_category.isEmpty()){
+            ((TextView) spSub1category.getSelectedView()).setError("");
+            valid = false;
+        }
+        if(category_spec.isEmpty()){
+            ((TextView) spSub2category.getSelectedView()).setError("");
+            valid = false;
+        }
+        if(occ_category.isEmpty()){
+            ((TextView) spCategory.getSelectedView()).setError("");
+            valid = false;
+        }
+        if(occ_category.isEmpty()){
+            ((TextView) spCategory.getSelectedView()).setError("");
+            valid = false;
+        }
+        if(wrapRb.getCheckedRadioButtonId() == -1){
+            rbYes.setError("");
+            rbNo.setError("");
+            valid = false;
+        }
+        if(date.isEmpty()){
+            etOccDate.setError("");
+            valid = false;
+        }
+        if(estfinish.isEmpty()){
+            etEstFinish.setError("");
+            valid = false;
+        }
+        if(path == null){
+            Toast.makeText(this, "You must upload some image", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        if(lvl_type.isEmpty()){
+            ((TextView) spLvlType.getSelectedView()).setError("");
+            valid = false;
+        }
+        if(risk_index.isEmpty()){
+            ((TextView) spCatastrophic.getSelectedView()).setError("");
+            ((TextView) spRiskIndex.getSelectedView()).setError("");
+            valid = false;
+        }
+        if(detail.isEmpty()){
+            etDesc.setError("");
+            valid = false;
+        }
+        return valid;
+    }
+
+    void sendReport(){
+        if(validate()){
+            dialogLoading = ProgressDialog.show(this, "",
+                    "Loading. Please wait...", true);
+            queue = Volley.newRequestQueue(this);
+            String url = "http://"+getResources().getString(R.string.ip_default)+"/API_IOR/occ/Create.php";
+            try {
+                Bitmap bitmap = ImageLoader.init().from(path).requestSize(1024, 1024).getBitmap();
+                stringImage = ImageBase64.encode(bitmap);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            if(cbHide.isChecked()){
+                hideReport = "1";
+            }else{
+                hideReport = "0";
+            }
+
+            selectedRadio = wrapRb.getCheckedRadioButtonId();
+            RadioButton radioButton = findViewById(selectedRadio);
+            stringAmbiguity = radioButton.getText().toString();
+            String riskIndex = probability.getProbability_value()+""+severity.getSeverity_value();
+
+            HashMap data = new HashMap();
+            data.put("occ_send_to",unit.getUnit());
+            data.put("occ_sub",etSubject.getText().toString());
+            data.put("occ_category",category.getCat_id());
+            data.put("occ_sub_category",subCategory.getCat_sub_id());
+            data.put("occ_sub_spec",subCategorySpec.getCat_sub_spec_id());
+            data.put("occ_ambiguity",stringAmbiguity);
+            data.put("occ_date",etOccDate.getText().toString());
+            data.put("estfinish",etOccDate.getText().toString());
+            data.put("attachment",stringImage);
+            data.put("occ_level_type",spLvlType.getSelectedItem().toString());
+            data.put("occ_risk_index",riskIndex);
+            data.put("occ_detail",etDesc.getText().toString());
+            data.put("create_by",sharedP.getString(LoginActivity.KEY_ID, ""));
+            data.put("create_by_unit",sharedP.getString(LoginActivity.KEY_UNIT, ""));
+            data.put("create_by_name",sharedP.getString(LoginActivity.KEY_NAME, ""));
+            data.put("create_hide","");
+
+
+            Log.d(TAG, "sendReport: "+data.toString());
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(data), new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    String code = null;
+                    String message = null;
+                    try {
+                        code = response.getString("code");
+                        message = response.getString("message");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if(code == CODE_SUCCES){
+                        //do something after success response
+                        Log.d(TAG, "onResponse: Success !! & code : "+code);
+                    }
+                    Toast.makeText(CreateIORActivity.this, ""+message, Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onResponse: "+response);
+                    dialogLoading.hide();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d(TAG, "onErrorResponse: "+error);
+                    dialogLoading.hide();
+                }
+            });
+            queue.add(request);
+        }
     }
 
 
@@ -239,20 +580,17 @@ public class CreateIORActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.et_occ_date:
                 datePicker().show();
-                Toast.makeText(this, "Occ. Date Clicked", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.et_est_finish:
-                Toast.makeText(this, "Est. Date Clicked", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.bt_photo:
-                Toast.makeText(this, "Open Camera Clicked", Toast.LENGTH_SHORT).show();
+                initCameraPhoto();
                 break;
             case R.id.bt_gallery:
-                Toast.makeText(this, "Open Gallery Clicked", Toast.LENGTH_SHORT).show();
+                initGalleryPhoto();
                 break;
             case R.id.bt_submit:
-                Toast.makeText(this, "Submit Clicked", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onViewClicked: " + Category.getAllCategory(realm).toString());
+                sendReport();
                 break;
         }
     }

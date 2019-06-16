@@ -38,8 +38,13 @@ public class SubCategory extends RealmObject {
     }
 
     public static RealmResults<SubCategory> getSubCategoryById(Realm realm, String id){
+        String mId = id;
         RealmQuery<SubCategory> query = realm.where(SubCategory.class);
-        return query.equalTo("cat_id", id).findAll();
+        if(id != null){
+            return query.equalTo("cat_id", id).findAll();
+        }else{
+            return query.findAll();
+        }
     }
 
     @Override

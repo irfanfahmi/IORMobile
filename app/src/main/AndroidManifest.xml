@@ -36,7 +36,14 @@
 
         <!-- <activity android:name=".DetailActivity.DetailActivity" /> -->
         <activity android:name=".detail_laporan.DetailActivity" />
-        <activity android:name=".IOR_Recived.ior_recived" />
+        <activity android:name=".IOR_Recived.ior_recived">
+        <intent-filter>
+            <action android:name="android.intent.action.SEARCH" />
+        </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
         <activity android:name=".create_laporan.CreateIORActivity">
 
         </activity>

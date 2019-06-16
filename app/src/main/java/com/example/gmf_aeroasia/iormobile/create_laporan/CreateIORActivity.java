@@ -547,19 +547,16 @@ public class CreateIORActivity extends AppCompatActivity {
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(data), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    String code = null;
-                    String message = null;
+
                     try {
-                        code = response.getString("code");
-                        message = response.getString("message");
+                        if(response.getString("code").contains(CODE_SUCCES)){
+                            finish();
+                            Toast.makeText(CreateIORActivity.this, "Report Success", Toast.LENGTH_SHORT).show();
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    if(code == CODE_SUCCES){
-                        //do something after success response
-                        Log.d(TAG, "onResponse: Success !! & code : "+code);
-                    }
-                    Toast.makeText(CreateIORActivity.this, ""+message, Toast.LENGTH_SHORT).show();
+
                     Log.d(TAG, "onResponse: "+response);
                     dialogLoading.hide();
                 }
@@ -570,6 +567,10 @@ public class CreateIORActivity extends AppCompatActivity {
                     dialogLoading.hide();
                 }
             });
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(request);
         }
     }
@@ -594,4 +595,5 @@ public class CreateIORActivity extends AppCompatActivity {
                 break;
         }
     }
+
 }

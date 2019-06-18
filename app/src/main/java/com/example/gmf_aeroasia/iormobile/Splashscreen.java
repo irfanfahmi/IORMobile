@@ -26,7 +26,7 @@ public class Splashscreen extends AppCompatActivity {
 
             @Override
             public void run() {
-                Intent i = new Intent(Splashscreen.this, MainActivity.class);
+                Intent i = new Intent(Splashscreen.this, LoginActivity.class);
                 startActivity(i);
                 //jeda selesai Splashscreen
                 this.finish();

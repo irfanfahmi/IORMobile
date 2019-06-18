@@ -398,16 +398,22 @@ public class CreateIORActivity extends AppCompatActivity {
     }
 
     public void initSpinnerProbability(){
+        Log.d("Cek", "initSpinnerProbability: ");
+
         spinnerAdapterProbability = new GeneralSpinnerAdapter<Probability>(this, Probability.getAllProbability(realm)) {
             @Override
             public String getEntryText(int position) {
+                Log.d("Cek", "getEntryText: "+getData().get(position).getProbability_value().toString());
                 return getData().get(position).getProbability_value();
+
             }
         };
         spCatastrophic.setAdapter(spinnerAdapterProbability);
         spCatastrophic.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("Cek", "onItemSelected: "+spinnerAdapterProbability.getData().get(position).toString());
+
                 probability = spinnerAdapterProbability.getData().get(position);
             }
 

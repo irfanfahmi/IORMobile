@@ -65,7 +65,7 @@ public class Ior_Recived_Adapter extends RecyclerView.Adapter<Ior_Recived_Adapte
         holder.vh_tgl.setText(info_occ.occ_date);
 
         //holder.vh_deskripsi_berita.setText(info.deskripsi_berita);
-        String fullUrl = "http://"+Mctx.getString(R.string.ip_default)+"/API_IOR/"+ info_occ.attachment;
+        String fullUrl = "http://"+Mctx.getString(R.string.ip_default)+"/API_IOR/attachment/"+ info_occ.attachment;
 
         //String fullUrl = "http://appro.probolinggokab.go.id/adminhumas/pict/" + info_occ.attachment;
 

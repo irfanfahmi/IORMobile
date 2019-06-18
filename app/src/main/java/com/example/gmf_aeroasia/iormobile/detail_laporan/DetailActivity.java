@@ -70,7 +70,7 @@ public class DetailActivity extends AppCompatActivity {
 
         RequestOptions requestOptions = new RequestOptions().centerCrop().placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background);
 
-        String fullUrl = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/"+ foto;
+        String fullUrl = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/attachment/"+ foto;
         // set image using Glide
         Glide.with(this).load(fullUrl).apply(requestOptions).into(tv_image);
 

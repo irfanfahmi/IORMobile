@@ -31,7 +31,10 @@ if(
     !empty($data->attachment)&&
     !empty($data->occ_level_type)&&
     !empty($data->occ_risk_index)&&
-    !empty($data->occ_detail)
+    !empty($data->occ_detail)&&
+    !empty($data->created_by)&&
+    !empty($data->created_by_name)&&
+    !empty($data->created_by_unit)
     ){
     array_push($occ_resp["check"],"data not empty");
     
@@ -57,6 +60,9 @@ if(
         $occ->occ_risk_index = $data->occ_risk_index;
         $occ->occ_detail = $data->occ_detail;
         $occ->created_date = $current_time;
+        $occ->created_by = $created_by;
+        $occ->created_by_name = $created_by_name;
+        $occ->created_by_unit = $created_by_unit;
 
         if($occ->create()){
             http_response_code(201);

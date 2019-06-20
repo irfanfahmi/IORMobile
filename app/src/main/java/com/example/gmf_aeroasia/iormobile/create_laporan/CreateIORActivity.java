@@ -546,7 +546,7 @@ public class CreateIORActivity extends AppCompatActivity {
             data.put("create_by",sharedP.getString(LoginActivity.KEY_ID, ""));
             data.put("create_by_unit",sharedP.getString(LoginActivity.KEY_UNIT, ""));
             data.put("create_by_name",sharedP.getString(LoginActivity.KEY_NAME, ""));
-            data.put("create_hide","");
+            data.put("create_hide",hideReport);
 
 
             Log.d(TAG, "sendReport: "+data.toString());

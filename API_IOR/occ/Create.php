@@ -60,9 +60,10 @@ if(
         $occ->occ_risk_index = $data->occ_risk_index;
         $occ->occ_detail = $data->occ_detail;
         $occ->created_date = $current_time;
-        $occ->created_by = $created_by;
-        $occ->created_by_name = $created_by_name;
-        $occ->created_by_unit = $created_by_unit;
+        $occ->created_by = $data->created_by;
+        $occ->created_by_name = $data->created_by_name;
+        $occ->created_by_unit = $data->created_by_unit;
+        $occ->created_hide = $data->created_hide;
 
         if($occ->create()){
             http_response_code(201);

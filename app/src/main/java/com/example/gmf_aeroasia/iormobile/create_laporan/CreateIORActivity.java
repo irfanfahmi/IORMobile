@@ -543,10 +543,10 @@ public class CreateIORActivity extends AppCompatActivity {
             data.put("occ_level_type",spLvlType.getSelectedItem().toString());
             data.put("occ_risk_index",riskIndex);
             data.put("occ_detail",etDesc.getText().toString());
-            data.put("create_by",sharedP.getString(LoginActivity.KEY_ID, ""));
-            data.put("create_by_unit",sharedP.getString(LoginActivity.KEY_UNIT, ""));
-            data.put("create_by_name",sharedP.getString(LoginActivity.KEY_NAME, ""));
-            data.put("create_hide",hideReport);
+            data.put("created_by",sharedP.getString(LoginActivity.KEY_ID, ""));
+            data.put("created_by_unit",sharedP.getString(LoginActivity.KEY_UNIT, ""));
+            data.put("created_by_name",sharedP.getString(LoginActivity.KEY_NAME, ""));
+            data.put("created_hide",hideReport);
 
 
             Log.d(TAG, "sendReport: "+data.toString());
@@ -573,10 +573,6 @@ public class CreateIORActivity extends AppCompatActivity {
                     dialogLoading.hide();
                 }
             });
-            request.setRetryPolicy(new DefaultRetryPolicy(
-                    5000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(request);
         }
     }

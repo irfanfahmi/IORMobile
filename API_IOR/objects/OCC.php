@@ -25,10 +25,10 @@ class OCC{
 	public $occ_confirm_stats;
 	public $occ_send_to;
 	public $created_date;
-	public $create_by;
-	public $create_by_name;
-	public $create_by_unit;
-	public $create_hide;
+	public $created_by;
+	public $created_by_name;
+	public $created_by_unit;
+	public $created_hide;
 	public $permission;
 	public $occ_follow_last_by;
 	public $ReportedDate;
@@ -66,8 +66,9 @@ class OCC{
     	occ_detail,
     	created_date,
     	created_by,
-    	create_by_name,
-    	create_by_unit) VALUES (
+    	created_by_name,
+    	created_by_unit,
+    	created_hide) VALUES (
     	:occ_send_to,
     	:occ_sub,
     	:occ_category,
@@ -83,7 +84,8 @@ class OCC{
     	:created_date,
     	:created_by,
     	:created_by_name,
-    	:created_by_unit)";
+    	:created_by_unit,
+    	:created_hide)";
 
         $stmt = $this->conn->prepare($query);
 
@@ -103,6 +105,7 @@ class OCC{
 	    $this->created_by=htmlspecialchars(strip_tags($this->created_by));
 	    $this->created_by_name=htmlspecialchars(strip_tags($this->created_by_name));
 	    $this->created_by_unit=htmlspecialchars(strip_tags($this->created_by_unit));
+	    $this->created_hide=htmlspecialchars(strip_tags($this->created_hide));
 
 	    $stmt->bindParam(":occ_send_to", $this->occ_send_to);
 	    $stmt->bindParam(":occ_sub", $this->occ_sub);
@@ -120,6 +123,7 @@ class OCC{
 	    $stmt->bindParam(":created_by", $this->created_by);
 	    $stmt->bindParam(":created_by_name", $this->created_by_name);
 	    $stmt->bindParam(":created_by_unit", $this->created_by_unit);
+	    $stmt->bindParam(":created_hide", $this->created_hide);
 
 
 	    if($stmt->execute()){

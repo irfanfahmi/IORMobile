@@ -276,6 +276,7 @@ public class CreateIORActivity extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.d(TAG, "onErrorResponse: " + error);
+
                 }
             });
 
@@ -560,7 +561,10 @@ public class CreateIORActivity extends AppCompatActivity {
                             Toast.makeText(CreateIORActivity.this, "Report Success", Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
+                        Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
+                        Log.d(TAG, "onResponse2: "+e);
+
                     }
 
                     Log.d(TAG, "onResponse: "+response);

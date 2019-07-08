@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.gmf_aeroasia.iormobile.CommentActivity;
 import com.example.gmf_aeroasia.iormobile.R;
 import com.example.gmf_aeroasia.iormobile.detail_laporan.DetailActivity;
 import com.example.gmf_aeroasia.iormobile.model.occ;
@@ -80,7 +81,7 @@ public class Ior_Recived_Adapter extends RecyclerView.Adapter<Ior_Recived_Adapte
         holder.view_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Mctx, DetailActivity.class);
+                Intent i = new Intent(Mctx, DetailActivity.class);;
                 i.putExtra("ior_no", info_occ.occ_no);
                 i.putExtra("foto_report", info_occ.attachment);
                 i.putExtra("ior_subject", info_occ.occ_sub);
@@ -99,6 +100,16 @@ public class Ior_Recived_Adapter extends RecyclerView.Adapter<Ior_Recived_Adapte
             }
         });
 
+        holder.btn_komen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent komen = new Intent(Mctx, CommentActivity.class);
+                komen.putExtra("occ_id", info_occ.occ_id);
+                komen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Mctx.startActivity(komen);
+            }
+        });
+
 
     }
 
@@ -113,7 +124,7 @@ public class Ior_Recived_Adapter extends RecyclerView.Adapter<Ior_Recived_Adapte
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView vh_nama_,vh_sub,vh_no_ior,vh_sendto,vh_tgl;
-        Button vh_status;
+        Button vh_status,btn_komen;
         ImageView iv_occ;
         LinearLayout view_container;
         //CardView view_containerp;
@@ -128,6 +139,7 @@ public class Ior_Recived_Adapter extends RecyclerView.Adapter<Ior_Recived_Adapte
             vh_sendto = itemView.findViewById(R.id.tv_sendto);
             vh_tgl = itemView.findViewById(R.id.tv_tgl_occ);
             vh_status = itemView.findViewById(R.id.bt_status);
+            btn_komen = itemView.findViewById(R.id.komenfollow);
 
             view_container = itemView.findViewById(R.id.linearlayoutitem);
 

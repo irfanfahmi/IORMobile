@@ -189,11 +189,12 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/komenfollow"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:background="@drawable/rect_btn_ior_blue"
                 android:fontFamily="@font/opensans_bold"
-                android:text="Comment"
+                android:text="Follow"
                 android:textColor="#83000000"
                 android:textSize="13dp" />
 

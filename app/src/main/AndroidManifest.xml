@@ -2,9 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gmf_aeroasia.iormobile">
 
-    <uses-feature android:name="android.hardware.camera2" android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true" />
+
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -31,23 +34,22 @@
             </intent-filter>
         </activity>
         <activity android:name=".Login.LoginActivity" />
-        <activity android:name=".ReportGuestActivity">
-        </activity>
+        <activity android:name=".ReportGuestActivity"></activity>
 
         <!-- <activity android:name=".DetailActivity.DetailActivity" /> -->
         <activity android:name=".detail_laporan.DetailActivity" />
         <activity android:name=".IOR_Recived.ior_recived">
-        <intent-filter>
-            <action android:name="android.intent.action.SEARCH" />
-        </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+                android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".create_laporan.CreateIORActivity">
-
-        </activity>
+        <activity android:name=".create_laporan.CreateIORActivity"></activity>
         <activity android:name=".profil_pegawai.ProfilActivity" />
+        <activity android:name=".CommentActivity"></activity>
     </application>
 
 </manifest>

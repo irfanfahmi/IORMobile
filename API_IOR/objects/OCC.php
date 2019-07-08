@@ -64,6 +64,7 @@ class OCC{
     	occ_level_type, 
     	occ_risk_index, 
     	occ_detail,
+    	occ_status,
     	created_date,
     	created_by,
     	created_by_name,
@@ -81,6 +82,7 @@ class OCC{
     	:occ_level_type,
     	:occ_risk_index,
     	:occ_detail,
+    	:occ_status,
     	:created_date,
     	:created_by,
     	:created_by_name,
@@ -101,6 +103,7 @@ class OCC{
 	    $this->occ_level_type=htmlspecialchars(strip_tags($this->occ_level_type));
 	    $this->occ_risk_index=htmlspecialchars(strip_tags($this->occ_risk_index));
 	    $this->occ_detail=htmlspecialchars(strip_tags($this->occ_detail));
+	    $this->occ_status=htmlspecialchars(strip_tags($this->occ_status));
 	    $this->created_date=htmlspecialchars(strip_tags($this->created_date));
 	    $this->created_by=htmlspecialchars(strip_tags($this->created_by));
 	    $this->created_by_name=htmlspecialchars(strip_tags($this->created_by_name));
@@ -119,6 +122,7 @@ class OCC{
 	    $stmt->bindParam(":occ_level_type", $this->occ_level_type);
 	    $stmt->bindParam(":occ_risk_index", $this->occ_risk_index);
 	    $stmt->bindParam(":occ_detail", $this->occ_detail);
+	    $stmt->bindParam(":occ_status", $this->occ_status);
 	    $stmt->bindParam(":created_date", $this->created_date);
 	    $stmt->bindParam(":created_by", $this->created_by);
 	    $stmt->bindParam(":created_by_name", $this->created_by_name);

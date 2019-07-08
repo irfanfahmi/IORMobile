@@ -45,6 +45,7 @@ if(
     $name_file = $id.".jpeg";
     $path = "../".$upload_folder."/".$name_file;
     $move_file = file_put_contents($path, base64_decode($data->attachment));
+    $status = "1"; //status open default 1
 
     if($move_file){
         $occ->occ_send_to = $data->occ_send_to;
@@ -59,6 +60,7 @@ if(
         $occ->occ_level_type = $data->occ_level_type;
         $occ->occ_risk_index = $data->occ_risk_index;
         $occ->occ_detail = $data->occ_detail;
+        $occ->occ_status = $status;
         $occ->created_date = $current_time;
         $occ->created_by = $data->created_by;
         $occ->created_by_name = $data->created_by_name;

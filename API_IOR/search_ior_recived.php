@@ -1,12 +1,12 @@
 <?php 
 
 require_once 'koneksi.php';
-
+$unit = $_POST["unit"];
 $type="users";
 if (isset($_POST['key'])) {
     $key = $_POST["key"];
  if ($type == 'users') {
-        $query = "SELECT * FROM `tbl_occ` WHERE occ_sub LIKE '%$key%'";
+        $query = "SELECT * FROM `tbl_occ` WHERE occ_sub LIKE '%$key%' AND `occ_send_to` LIKE '%$unit%'";
         $result = mysqli_query($db, $query);
         // print_r($result);
         // exit();
@@ -40,7 +40,7 @@ if (isset($_POST['key'])) {
      }
 } else {
    if ($type == 'users') {
-        $query = "SELECT * FROM `tbl_occ` ORDER BY occ_id ASC";
+        $query = "SELECT * FROM `tbl_occ` WHERE `occ_send_to` LIKE '%$unit%' ORDER BY occ_id ASC";
         $result = mysqli_query($db, $query);
         $response = array();
         while( $row = mysqli_fetch_assoc($result) ){

@@ -2,6 +2,7 @@ package com.example.gmf_aeroasia.iormobile.IOR_Recived;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -40,7 +41,13 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
     private RecyclerView rview ;
     private Toolbar toolbar;
     String textSearch = null;
-
+    SharedPreferences sharedP;
+    SharedPreferences.Editor shareEdit;
+    final String PREF = "Keypref";
+    final String KEY_NAME = "name";
+    final String KEY_ID = "id";
+    final String KEY_UNIT = "unit";
+    final String KEY_USER = "username";
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -65,8 +72,13 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
 
         final LinearLayoutManager manager = new LinearLayoutManager(this);
         rview.setLayoutManager(manager);
-
+        sharedP =   getSharedPreferences(PREF, Context.MODE_PRIVATE);
+        shareEdit = sharedP.edit();
         Log.d("ior_recived", "onCreate: "+textSearch);
+        String unit = getprefunit();
+
+        final String unitdinas = unit.substring(0,2);
+        Log.d("ior_recived", "Unit Dinas Hbis di Substring: "+unitdinas);
 
         String url = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/search_ior_recived.php";
         final String text = textSearch;
@@ -100,16 +112,16 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
                 error.printStackTrace();
             }
         })
-//        {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                HashMap<String, String> hashMap = new HashMap<>();
-//                hashMap.put("key", textSearch);
-//                return hashMap;
-//            }
-//
-//
-//        }
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> hashMap = new HashMap<>();
+                hashMap.put("unit", unitdinas);
+                return hashMap;
+            }
+
+
+        }
  ;
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 5000,
@@ -118,6 +130,21 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
         MySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
 
 
+
+    }
+
+    public String getprefuser(){
+        sharedP = getSharedPreferences(PREF, Context.MODE_PRIVATE);
+        return sharedP.getString(KEY_USER,"");
+    }
+    public String getprefname(){
+        sharedP = getSharedPreferences(PREF, Context.MODE_PRIVATE);
+        return sharedP.getString(KEY_NAME,"");
+
+    }
+    public String getprefunit(){
+        sharedP = getSharedPreferences(PREF, Context.MODE_PRIVATE);
+        return sharedP.getString(KEY_UNIT,"");
 
     }
 
@@ -152,6 +179,9 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
     }
 
     private void calldata(final String key){
+        String unit = getprefunit();
+
+        final String unitdinas = unit.substring(0,2);
         Log.d("cek ior recived", "calldata key: "+key);
         String url = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/search_ior_recived.php";
         final String text = textSearch;
@@ -191,6 +221,7 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> hashMap = new HashMap<>();
                 hashMap.put("key", key);
+                hashMap.put("unit", unitdinas);
                 return hashMap;
             }
 

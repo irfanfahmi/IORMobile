@@ -2,7 +2,7 @@
     <string name="app_name">IORMobile</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="ip_default">192.168.71.120</string>
+    <string name="ip_default">192.168.1.6</string>
 
     <array name="arr_lvl_type">
         <item>Aircraft</item>

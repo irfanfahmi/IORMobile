@@ -292,8 +292,7 @@ public class CreateIORActivity extends AppCompatActivity {
         spinnerAdapterUnit = new GeneralSpinnerAdapter<Unit>(this, Unit.getAllUnit(realm)) {
             @Override
             public String getEntryText(int position) {
-                unit = getData().get(position);
-                return unit.getUnit();
+                return getData().get(position).getUnit();
             }
         };
         spTo.setAdapter(spinnerAdapterUnit);

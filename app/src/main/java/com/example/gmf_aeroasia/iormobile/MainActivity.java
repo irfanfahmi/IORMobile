@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.gmf_aeroasia.iormobile.IOR_Recived.ior_recived;
+import com.example.gmf_aeroasia.iormobile.IOR_Send.ior_send;
 import com.example.gmf_aeroasia.iormobile.Login.LoginActivity;
 import com.example.gmf_aeroasia.iormobile.create_laporan.CreateIORActivity;
 import com.example.gmf_aeroasia.iormobile.profil_pegawai.ProfilActivity;
@@ -170,6 +171,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void klikprofil(View view) {
         Intent intent = new Intent(MainActivity.this, ProfilActivity.class);
+        startActivity(intent);
+    }
+
+    public void klikIORSEND(View view) {
+        Intent intent = new Intent(MainActivity.this, ior_send.class);
         startActivity(intent);
     }
 }

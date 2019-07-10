@@ -1,14 +1,12 @@
-package com.example.gmf_aeroasia.iormobile.IOR_Recived;
+package com.example.gmf_aeroasia.iormobile.IOR_Send;
 
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -28,7 +26,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.gmf_aeroasia.iormobile.R;
-import com.example.gmf_aeroasia.iormobile.adapter.Ior_Recived_Adapter;
+import com.example.gmf_aeroasia.iormobile.adapter.Ior_Send_Adapter;
 import com.example.gmf_aeroasia.iormobile.model.occ;
 import com.example.gmf_aeroasia.iormobile.service.MySingleton;
 import com.kosalgeek.android.json.JsonConverter;
@@ -37,7 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ior_recived extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class ior_send extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private RecyclerView rview ;
     private Toolbar toolbar;
     String textSearch = null;
@@ -49,11 +47,12 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
     final String KEY_UNIT = "unit";
     final String KEY_USER = "username";
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ior_recived);
+        setContentView(R.layout.activity_ior_send);
+
 
         toolbar = (Toolbar) findViewById(R.id.toolbarid);
         setSupportActionBar(toolbar);
@@ -66,21 +65,17 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
             }
         });
 
-//getting the recyclerview from xml
-        rview = findViewById(R.id.recylcerViewr);
+        rview = findViewById(R.id.recylcerViews);
         rview.setHasFixedSize(true);
 
         final LinearLayoutManager manager = new LinearLayoutManager(this);
         rview.setLayoutManager(manager);
         sharedP =   getSharedPreferences(PREF, Context.MODE_PRIVATE);
         shareEdit = sharedP.edit();
-        Log.d("ior_recived", "onCreate: "+textSearch);
-        String unit = getprefunit();
 
-        final String unitdinas = unit.substring(0,2);
-        Log.d("ior_recived", "Unit Dinas Hbis di Substring: "+unitdinas);
+        final String name = getprefname();
 
-        String url = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/search_ior_recived.php";
+        String url = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/tampil_ior_send.php";
         final String text = textSearch;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -88,11 +83,11 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
                 ArrayList<occ> occlist = new JsonConverter<occ>().toArrayList(response, occ.class);
                 Log.d("ior_sand", "response : "+response);
 
-                Ior_Recived_Adapter adapter = new Ior_Recived_Adapter(getApplicationContext(), occlist);
+                Ior_Send_Adapter adapter = new Ior_Send_Adapter(getApplicationContext(), occlist);
                 rview.setLayoutManager(manager);
                 rview.setAdapter(adapter);
             }
-            }, new Response.ErrorListener() {
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
@@ -116,19 +111,18 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> hashMap = new HashMap<>();
-                hashMap.put("unit", unitdinas);
+                hashMap.put("name", name);
                 return hashMap;
             }
 
 
         }
- ;
+                ;
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 5000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         MySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
-
 
 
     }
@@ -166,7 +160,7 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
     public boolean onQueryTextSubmit(String query) {
         textSearch = query;
         calldata(query);
-        Log.d("cek ior recived", "onQueryTextSubmit: "+query);
+        Log.d("cek ior send", "onQueryTextSubmit: "+query);
         return false;
     }
 
@@ -174,22 +168,22 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
     public boolean onQueryTextChange(String newText) {
         textSearch = newText;
         calldata(newText);
-        Log.d("cek ior recived", "onQueryTextChange: "+newText);
+        Log.d("cek ior send", "onQueryTextChange: "+newText);
         return false;
     }
 
     private void calldata(final String key){
-        String unit = getprefunit();
+        final String name = getprefname();
 
-        final String unitdinas = unit.substring(0,2);
-        Log.d("cek ior recived", "calldata key: "+key);
-        String url = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/search_ior_recived.php";
+
+        Log.d("cek ior recived", "calldata key: "+key+"  Name: "+name);
+        String url = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/tampil_ior_send.php";
         final String text = textSearch;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 ArrayList<occ> occlist = new JsonConverter<occ>().toArrayList(response, occ.class);
-                Ior_Recived_Adapter adapter = new Ior_Recived_Adapter(getApplicationContext(), occlist);
+                Ior_Send_Adapter adapter = new Ior_Send_Adapter(getApplicationContext(), occlist);
                 final LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
                 rview.setLayoutManager(manager);
                 rview.setAdapter(adapter);
@@ -219,7 +213,7 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> hashMap = new HashMap<>();
                 hashMap.put("key", key);
-                hashMap.put("unit", unitdinas);
+                hashMap.put("name", name);
                 return hashMap;
             }
 

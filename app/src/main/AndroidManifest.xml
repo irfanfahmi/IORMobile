@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Login.LoginActivity" />
-        <activity android:name=".ReportGuestActivity"></activity>
+        <activity android:name=".ReportGuestActivity" />
 
         <!-- <activity android:name=".DetailActivity.DetailActivity" /> -->
         <activity android:name=".detail_laporan.DetailActivity" />
@@ -47,9 +47,10 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".create_laporan.CreateIORActivity"></activity>
+        <activity android:name=".create_laporan.CreateIORActivity" />
         <activity android:name=".profil_pegawai.ProfilActivity" />
-        <activity android:name=".CommentActivity"></activity>
+        <activity android:name=".CommentActivity" />
+        <activity android:name=".IOR_Send.ior_send"></activity>
     </application>
 
 </manifest>

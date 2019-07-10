@@ -51,7 +51,7 @@ if(
     $name_file = $id.".jpeg";
     $path = "../".$upload_folder."/".$name_file;
     $move_file = file_put_contents($path, base64_decode($data->attachment));
-    $status = "1"; //status open default 1
+    $status = "0"; //status open default 1
 
     if($move_file){
         $occ->occ_no = $no_occ;

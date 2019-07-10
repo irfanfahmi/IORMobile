@@ -11,7 +11,7 @@ include_once '../objects/OCC.php';
 
 $database = new Database();
 $db = $database->getConnection();
-
+$con = mysqli_connect("localhost", "root", "$password", "190204_db_ior");
 $occ = new OCC($db);
 $data = json_decode(file_get_contents("php://input"));
 $occ_resp=array();
@@ -39,8 +39,8 @@ if(
     array_push($occ_resp["check"],"data not empty");
     $now = DateTime::createFromFormat('U.u', microtime(true));
 
-    $query = "SELECT * FROM `tbl_occ` WHERE MONTH(created_date) = MONTH(CURRENT_DATE)";
-    $report_in_month = mysqli_query($database->getCon(), $query);
+    $query = "SELECT * FROM tbl_occ WHERE MONTH(created_date) = MONTH(CURRENT_DATE)";
+    $report_in_month = mysqli_query($con, $query); 
     $report_now = mysqli_num_rows($report_in_month) + 1;
     $part_no_occ = $now->format('m/Y');
     $no_occ = sprintf("%03d",$report_now)."/".$part_no_occ;

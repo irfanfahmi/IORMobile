@@ -2,6 +2,7 @@ package com.example.gmf_aeroasia.iormobile.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,23 +49,28 @@ public class Ior_Send_Adapter extends RecyclerView.Adapter<Ior_Send_Adapter.MyVi
 
         if (info_occ.occ_status.equals("1")){
             status = "Open";
+            holder.vh_status.setBackgroundResource(R.drawable.rect_yellow);
             Log.d("Status", "onBindViewHolder: "+status);
         }else if(info_occ.occ_status.equals("3")){
             status = "Closed";
+            holder.vh_status.setBackgroundResource(R.drawable.rect_green);
             Log.d("Status", "onBindViewHolder: "+status);
 
         }else if(info_occ.occ_status.equals("0")){
-            status = "NCR";
+            status = "Not OCC";
+            holder.vh_status.setBackgroundResource(R.drawable.rect_blue);
+
             Log.d("Status", "onBindViewHolder: "+status);
 
         }
+
         holder.vh_nama_.setText(info_occ.created_by_name);
         holder.vh_no_ior.setText(info_occ.occ_no);
         holder.vh_sendto.setText(info_occ.occ_send_to);
         holder.vh_status.setText(status);
         holder.vh_sub.setText(info_occ.occ_sub);
         holder.vh_tgl.setText(info_occ.occ_date);
-
+        holder.vh_desc.setText(info_occ.occ_detail);
         String fullUrl = "http://"+Mctx.getString(R.string.ip_default)+"/API_IOR/attachment/"+ info_occ.attachment;
 
 
@@ -97,16 +103,6 @@ public class Ior_Send_Adapter extends RecyclerView.Adapter<Ior_Send_Adapter.MyVi
             }
         });
 
-//        holder.btn_komen.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent komen = new Intent(Mctx, CommentActivity.class);
-//                komen.putExtra("occ_id", info_occ.occ_id);
-//                komen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                Mctx.startActivity(komen);
-//            }
-//        });
-
 
     }
 
@@ -120,10 +116,10 @@ public class Ior_Send_Adapter extends RecyclerView.Adapter<Ior_Send_Adapter.MyVi
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView vh_nama_,vh_sub,vh_no_ior,vh_sendto,vh_tgl;
+        TextView vh_nama_,vh_sub,vh_no_ior,vh_sendto,vh_tgl,vh_desc;
         Button vh_status;
         ImageView iv_occ;
-        LinearLayout view_container;
+        CardView view_container;
         //CardView view_containerp;
 
 
@@ -134,6 +130,7 @@ public class Ior_Send_Adapter extends RecyclerView.Adapter<Ior_Send_Adapter.MyVi
             vh_sub = itemView.findViewById(R.id.tv_occ_subject_s);
             vh_no_ior = itemView.findViewById(R.id.tv_no_ior_s);
             vh_sendto = itemView.findViewById(R.id.tv_sendto_s);
+            vh_desc = itemView.findViewById(R.id.tv_occ_desc_s);
             vh_tgl = itemView.findViewById(R.id.tv_tgl_occ_s);
             vh_status = itemView.findViewById(R.id.bt_status_s);
 

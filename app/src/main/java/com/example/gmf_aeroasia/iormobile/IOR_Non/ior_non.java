@@ -1,12 +1,12 @@
-package com.example.gmf_aeroasia.iormobile.IOR_Send;
+package com.example.gmf_aeroasia.iormobile.IOR_Non;
 
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -27,7 +27,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.gmf_aeroasia.iormobile.R;
-import com.example.gmf_aeroasia.iormobile.adapter.Ior_Send_Adapter;
+import com.example.gmf_aeroasia.iormobile.adapter.Ior_Non_Adapter;
 import com.example.gmf_aeroasia.iormobile.model.occ;
 import com.example.gmf_aeroasia.iormobile.service.MySingleton;
 import com.kosalgeek.android.json.JsonConverter;
@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ior_send extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class ior_non extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private RecyclerView rview ;
     private Toolbar toolbar;
     String textSearch = null;
@@ -52,7 +52,7 @@ public class ior_send extends AppCompatActivity implements SearchView.OnQueryTex
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ior_send);
+        setContentView(R.layout.activity_ior_non);
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbarid);
@@ -76,13 +76,13 @@ public class ior_send extends AppCompatActivity implements SearchView.OnQueryTex
 
         final String name = getprefname();
 
-        String url = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/tampil_ior_send.php";
+        String url = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/tampil_ior_non.php";
         final String text = textSearch;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 ArrayList<occ> occlist = new JsonConverter<occ>().toArrayList(response, occ.class);
-                Log.d("ior_sand", "response : "+response);
+                Log.d("ior_non", "response : "+response);
 
                 if (response.equalsIgnoreCase("")){
                     tvNoData.setVisibility(View.VISIBLE);
@@ -93,7 +93,7 @@ public class ior_send extends AppCompatActivity implements SearchView.OnQueryTex
                     tvNoData.setVisibility(View.GONE);
                     rview.setVisibility(View.VISIBLE);
                 }
-                Ior_Send_Adapter adapter = new Ior_Send_Adapter(getApplicationContext(), occlist);
+                Ior_Non_Adapter adapter = new Ior_Non_Adapter(getApplicationContext(), occlist);
                 rview.setLayoutManager(manager);
                 rview.setAdapter(adapter);
             }
@@ -187,13 +187,13 @@ public class ior_send extends AppCompatActivity implements SearchView.OnQueryTex
 
 
         Log.d("cek ior recived", "calldata key: "+key+"  Name: "+name);
-        String url = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/tampil_ior_send.php";
+        String url = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/tampil_ior_non.php";
         final String text = textSearch;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 ArrayList<occ> occlist = new JsonConverter<occ>().toArrayList(response, occ.class);
-                Ior_Send_Adapter adapter = new Ior_Send_Adapter(getApplicationContext(), occlist);
+                Ior_Non_Adapter adapter = new Ior_Non_Adapter(getApplicationContext(), occlist);
                 final LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
                 rview.setLayoutManager(manager);
                 rview.setAdapter(adapter);

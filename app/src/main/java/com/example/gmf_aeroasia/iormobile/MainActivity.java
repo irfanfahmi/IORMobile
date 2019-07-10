@@ -13,17 +13,40 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.example.gmf_aeroasia.iormobile.IOR_Non.ior_non;
 import com.example.gmf_aeroasia.iormobile.IOR_Recived.ior_recived;
 import com.example.gmf_aeroasia.iormobile.IOR_Send.ior_send;
 import com.example.gmf_aeroasia.iormobile.Login.LoginActivity;
+import com.example.gmf_aeroasia.iormobile.adapter.Ior_History_Adapter;
 import com.example.gmf_aeroasia.iormobile.create_laporan.CreateIORActivity;
+import com.example.gmf_aeroasia.iormobile.model.occ;
 import com.example.gmf_aeroasia.iormobile.profil_pegawai.ProfilActivity;
+import com.example.gmf_aeroasia.iormobile.service.MySingleton;
+import com.kosalgeek.android.json.JsonConverter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout mDrawer;
@@ -38,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     final String KEY_ID = "id";
     final String KEY_UNIT = "unit";
     final String KEY_USER = "username";
+    private RecyclerView rview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +108,74 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
             }
         });
+
+        rview = findViewById(R.id.recylcerViewh);
+        rview.setHasFixedSize(true);
+        final TextView tvNoData = findViewById(R.id.no_data);
+        final LinearLayoutManager manager = new LinearLayoutManager(this);
+        rview.setLayoutManager(manager);
+
+        sharedP =   getSharedPreferences(PREF, Context.MODE_PRIVATE);
+        shareEdit = sharedP.edit();
+
+        final String name = getprefname();
+        String url = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/tampil_history.php";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ArrayList<occ> occlist = new JsonConverter<occ>().toArrayList(response, occ.class);
+                Log.d("ior_history", "response : "+response);
+
+                if (response.equalsIgnoreCase("")){
+                    tvNoData.setVisibility(View.VISIBLE);
+                    rview.setVisibility(View.GONE);
+
+                }else {
+
+                    tvNoData.setVisibility(View.GONE);
+                    rview.setVisibility(View.VISIBLE);
+                }
+                Ior_History_Adapter adapter = new Ior_History_Adapter(getApplicationContext(), occlist);
+                rview.setLayoutManager(manager);
+                rview.setAdapter(adapter);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Toast.makeText(getApplicationContext(),
+                            "Koneksi Timeout , Silahkan Coba Kembali", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getApplicationContext(),
+                            "Server Mengalami Masalah , Silahkan Coba Kembali", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof NetworkError) {
+                    Toast.makeText(getApplicationContext(),
+                            "Jaringan Mengalami Masalah, Silahkan Coba Kembali", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),
+                            "Gagal , Silahkan Coba Kembali", Toast.LENGTH_SHORT).show();
+                }
+
+                error.printStackTrace();
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> hashMap = new HashMap<>();
+                hashMap.put("name", name);
+                return hashMap;
+            }
+
+
+        }
+                ;
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+
 
 //
     }
@@ -176,6 +268,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void klikIORSEND(View view) {
         Intent intent = new Intent(MainActivity.this, ior_send.class);
+        startActivity(intent);
+    }
+
+    public void klikIORNON(View view) {
+        Intent intent = new Intent(MainActivity.this, ior_non.class);
         startActivity(intent);
     }
 }

@@ -50,7 +50,8 @@
         <activity android:name=".create_laporan.CreateIORActivity" />
         <activity android:name=".profil_pegawai.ProfilActivity" />
         <activity android:name=".CommentActivity" />
-        <activity android:name=".IOR_Send.ior_send"></activity>
+        <activity android:name=".IOR_Send.ior_send" />
+        <activity android:name=".IOR_Non.ior_non"></activity>
     </application>
 
 </manifest>

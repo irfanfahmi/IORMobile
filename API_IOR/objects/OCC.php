@@ -52,6 +52,7 @@ class OCC{
     function create(){
 
     	$query = "INSERT INTO tbl_occ (
+    	occ_no,
     	occ_send_to, 
     	occ_sub, 
     	occ_category, 
@@ -70,6 +71,7 @@ class OCC{
     	created_by_name,
     	created_by_unit,
     	created_hide) VALUES (
+    	:occ_no,
     	:occ_send_to,
     	:occ_sub,
     	:occ_category,
@@ -109,6 +111,7 @@ class OCC{
 	    $this->created_by_name=htmlspecialchars(strip_tags($this->created_by_name));
 	    $this->created_by_unit=htmlspecialchars(strip_tags($this->created_by_unit));
 	    $this->created_hide=htmlspecialchars(strip_tags($this->created_hide));
+	    $this->occ_no=htmlspecialchars(strip_tags($this->occ_no));
 
 	    $stmt->bindParam(":occ_send_to", $this->occ_send_to);
 	    $stmt->bindParam(":occ_sub", $this->occ_sub);
@@ -128,6 +131,7 @@ class OCC{
 	    $stmt->bindParam(":created_by_name", $this->created_by_name);
 	    $stmt->bindParam(":created_by_unit", $this->created_by_unit);
 	    $stmt->bindParam(":created_hide", $this->created_hide);
+	    $stmt->bindParam(":occ_no", $this->occ_no);
 
 
 	    if($stmt->execute()){

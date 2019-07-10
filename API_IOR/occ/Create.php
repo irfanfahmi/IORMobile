@@ -37,8 +37,14 @@ if(
     !empty($data->created_by_unit)
     ){
     array_push($occ_resp["check"],"data not empty");
-    
     $now = DateTime::createFromFormat('U.u', microtime(true));
+
+    $query = "SELECT * FROM `tbl_occ` WHERE MONTH(created_date) = MONTH(CURRENT_DATE)";
+    $report_in_month = mysqli_query($database->getCon(), $query);
+    $report_now = mysqli_num_rows($report_in_month) + 1;
+    $part_no_occ = $now->format('m/Y');
+    $no_occ = sprintf("%03d",$report_now)."/".$part_no_occ;
+
     $id = $now->format('YmdHisu');
     $current_time = $now->format('Y-m-d H:i:s');
     $upload_folder = "attachment";
@@ -48,6 +54,7 @@ if(
     $status = "1"; //status open default 1
 
     if($move_file){
+        $occ->occ_no = $no_occ;
         $occ->occ_send_to = $data->occ_send_to;
         $occ->occ_sub = $data->occ_sub;
         $occ->occ_category = $data->occ_category;

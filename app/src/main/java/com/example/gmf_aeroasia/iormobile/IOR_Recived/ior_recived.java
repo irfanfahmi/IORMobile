@@ -86,7 +86,7 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
             @Override
             public void onResponse(String response) {
                 ArrayList<occ> occlist = new JsonConverter<occ>().toArrayList(response, occ.class);
-                Log.d("ior_sand", "response : "+response);
+                Log.d("ior_recived", "response : "+response);
 
                 Ior_Recived_Adapter adapter = new Ior_Recived_Adapter(getApplicationContext(), occlist);
                 rview.setLayoutManager(manager);
@@ -197,7 +197,7 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error instanceof TimeoutError || error  instanceof NoConnectionError) {
                     Toast.makeText(getApplicationContext(),
                             "Koneksi Timeout , Silahkan Coba Kembali", Toast.LENGTH_SHORT).show();
                 } else if (error instanceof ServerError) {

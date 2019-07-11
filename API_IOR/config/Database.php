@@ -22,11 +22,5 @@ class Database{
  
         return $this->conn;
     }
-
-    public function getCon(){
-        $con = mysqli_connect($host, $username, $password, $db_name);
-        return $con;
-
-    }
 }
 ?>

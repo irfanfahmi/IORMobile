@@ -2,6 +2,7 @@ package com.example.gmf_aeroasia.iormobile.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,12 +27,23 @@ public class Ior_Send_Adapter extends RecyclerView.Adapter<Ior_Send_Adapter.MyVi
     private Context Mctx;
     private ArrayList<occ> occ_send_list;
     String status ;
+    SharedPreferences sharedP;
+    SharedPreferences.Editor shareEdit;
+    final String PREF = "Keypref";
+    final String KEY_NAME = "name";
+    final String KEY_ID = "id";
+    final String KEY_UNIT = "unit";
+    final String KEY_USER = "username";
 
     public Ior_Send_Adapter(Context Mctx, ArrayList<occ> occ_send_list) {
         this.Mctx = Mctx;
         this.occ_send_list = occ_send_list;
     }
+    public String getprefunit(){
+        sharedP = Mctx.getSharedPreferences(PREF, Context.MODE_PRIVATE);
+        return sharedP.getString(KEY_UNIT,"");
 
+    }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -47,21 +59,35 @@ public class Ior_Send_Adapter extends RecyclerView.Adapter<Ior_Send_Adapter.MyVi
 
         final occ info_occ = occ_send_list.get(position);
 
-        if (info_occ.occ_status.equals("1")){
+        String unit = getprefunit();
+        final String unitdinas = unit.substring(0,2);
+        if (info_occ.occ_status.equals("0")){
+            status = "Waiting Verification";
+            holder.vh_status.setBackgroundResource(R.drawable.rect_progress);
+        }else if(info_occ.occ_status.equals("1")){
             status = "Open";
             holder.vh_status.setBackgroundResource(R.drawable.rect_yellow);
-            Log.d("Status", "onBindViewHolder: "+status);
+        }else if(info_occ.occ_status.equals("2")){
+            status = "Progress";
+            holder.vh_status.setBackgroundResource(R.drawable.rect_progress);
         }else if(info_occ.occ_status.equals("3")){
             status = "Closed";
             holder.vh_status.setBackgroundResource(R.drawable.rect_green);
-            Log.d("Status", "onBindViewHolder: "+status);
+        }else if(info_occ.occ_status.equals("4")){
+            status = "Over Due";
+            holder.vh_status.setBackgroundResource(R.drawable.rect_overdue);
 
-        }else if(info_occ.occ_status.equals("0")){
+        }else if(info_occ.occ_status.equals("5")){
             status = "Not OCC";
-            holder.vh_status.setBackgroundResource(R.drawable.rect_blue);
-
-            Log.d("Status", "onBindViewHolder: "+status);
-
+            holder.vh_status.setBackgroundResource(R.drawable.rect_overdue);
+        }else if(info_occ.occ_status.equals("6")){
+            if (!unitdinas.equalsIgnoreCase("TQ")){
+                status = "Progress";
+                holder.vh_status.setBackgroundResource(R.drawable.rect_progress);
+            }else {
+                status = "Waiting to close";
+                holder.vh_status.setBackgroundResource(R.drawable.rect_progress);
+            }
         }
 
         holder.vh_nama_.setText(info_occ.created_by_name);

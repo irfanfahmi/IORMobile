@@ -1,20 +1,13 @@
 package com.example.gmf_aeroasia.iormobile.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.gmf_aeroasia.iormobile.R;
-import com.example.gmf_aeroasia.iormobile.detail_laporan.DetailActivity;
 import com.example.gmf_aeroasia.iormobile.model.occ_follow;
 
 import java.util.ArrayList;
@@ -50,6 +43,7 @@ public class Ior_follow_adapter extends RecyclerView.Adapter<Ior_follow_adapter.
         holder.vh_follow_est.setText(info_occ_follow.follow_est_finish);
         holder.vh_follow_attch.setText(info_occ_follow.attachment);
         holder.vh_follow_desc.setText(info_occ_follow.follow_desc);
+        holder.vh_follow_unit.setText("("+info_occ_follow.follow_by_unit+")");
 
 
         //holder.vh_deskripsi_berita.setText(info.deskripsi_berita);
@@ -111,7 +105,7 @@ public class Ior_follow_adapter extends RecyclerView.Adapter<Ior_follow_adapter.
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView vh_follow_name,vh_follow_by,vh_follow_est,vh_follow_attch,vh_follow_desc;
+        TextView vh_follow_name,vh_follow_by,vh_follow_est,vh_follow_attch,vh_follow_desc,vh_follow_unit;
 //        Button vh_status,btn_komen;
 //        ImageView iv_occ;
 //        LinearLayout view_container;
@@ -126,6 +120,7 @@ public class Ior_follow_adapter extends RecyclerView.Adapter<Ior_follow_adapter.
             vh_follow_est = itemView.findViewById(R.id.tv_occ_follow_est);
             vh_follow_attch = itemView.findViewById(R.id.tv_occ_follow_attch);
             vh_follow_desc = itemView.findViewById(R.id.tv_occ_follow_desc);
+            vh_follow_unit = itemView.findViewById(R.id.tv_occ_follow_unit);
             //vh_status = itemView.findViewById(R.id.bt_status);
             //btn_komen = itemView.findViewById(R.id.komenfollow);
 

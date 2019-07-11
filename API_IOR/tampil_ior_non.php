@@ -1,5 +1,6 @@
 <?php 
 require_once 'koneksi.php';
+$response = null;
 $name = $_POST["name"];
 $status = "0";
 $type="users";

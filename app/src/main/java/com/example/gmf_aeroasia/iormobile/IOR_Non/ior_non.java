@@ -84,7 +84,7 @@ public class ior_non extends AppCompatActivity implements SearchView.OnQueryText
                 ArrayList<occ> occlist = new JsonConverter<occ>().toArrayList(response, occ.class);
                 Log.d("ior_non", "response : "+response);
 
-                if (response.equalsIgnoreCase("")){
+                if (response==null){
                     tvNoData.setVisibility(View.VISIBLE);
                     rview.setVisibility(View.GONE);
 

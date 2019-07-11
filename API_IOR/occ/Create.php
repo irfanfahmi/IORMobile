@@ -11,7 +11,7 @@ include_once '../objects/OCC.php';
 
 $database = new Database();
 $db = $database->getConnection();
-$con = mysqli_connect("localhost", "root", "$password", "190204_db_ior");
+
 $occ = new OCC($db);
 $data = json_decode(file_get_contents("php://input"));
 $occ_resp=array();
@@ -52,9 +52,8 @@ if(
     $path = "../".$upload_folder."/".$name_file;
     $move_file = file_put_contents($path, base64_decode($data->attachment));
     $status = "0"; //status open default 1
-
+    
     if($move_file){
-        $occ->occ_no = $no_occ;
         $occ->occ_send_to = $data->occ_send_to;
         $occ->occ_sub = $data->occ_sub;
         $occ->occ_category = $data->occ_category;

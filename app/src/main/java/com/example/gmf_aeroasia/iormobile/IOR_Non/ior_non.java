@@ -65,6 +65,7 @@ public class ior_non extends AppCompatActivity implements SearchView.OnQueryText
                 onBackPressed();
             }
         });
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
 
         rview = findViewById(R.id.recylcerViews);
         rview.setHasFixedSize(true);

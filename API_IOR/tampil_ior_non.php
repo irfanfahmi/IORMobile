@@ -2,7 +2,7 @@
 require_once 'koneksi.php';
 $response = null;
 $name = $_POST["name"];
-$status = "0";
+$status = "5";
 $type="users";
 if (isset($_POST['key'])) {
     $key = $_POST["key"];

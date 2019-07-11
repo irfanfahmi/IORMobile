@@ -66,6 +66,9 @@ public class ior_recived extends AppCompatActivity implements SearchView.OnQuery
             }
         });
 
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+
+
 //getting the recyclerview from xml
         rview = findViewById(R.id.recylcerViewr);
         rview.setHasFixedSize(true);

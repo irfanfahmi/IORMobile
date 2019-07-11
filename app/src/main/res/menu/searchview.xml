@@ -5,6 +5,7 @@
         android:id="@+id/search"
         android:title="@string/app_name"
         android:hint="Cari..."
+        android:iconTint="@color/colorWhite"
         android:icon="@drawable/ic_search_white_24dp"
         app:showAsAction="collapseActionView|ifRoom"
         app:actionViewClass="android.widget.SearchView"/>

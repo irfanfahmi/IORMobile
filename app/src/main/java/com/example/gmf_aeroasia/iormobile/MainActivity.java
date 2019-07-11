@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        drawerToggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.colorWhite));
         sharedP =   getSharedPreferences(PREF, Context.MODE_PRIVATE);
         shareEdit = sharedP.edit();
 

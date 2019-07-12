@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -158,6 +159,19 @@ boolean isOpen = false;
             }else if(status.equalsIgnoreCase("3")) {
                 //status Closed hanya muncul add follow aja
                 Log.d("DetailActivity","Responsible: masuk sini 3");
+                fab.setVisibility(View.GONE);
+                tv_addApprove.setVisibility(View.GONE);
+                fab_addApprove.setVisibility(View.GONE);
+                tv_addProgress.setVisibility(View.GONE);
+                fab_addProgress.setVisibility(View.GONE);
+                tv_addPurpose.setVisibility(View.GONE);
+                fab_addPurpose.setVisibility(View.GONE);
+                tv_addClose.setVisibility(View.GONE);
+                fab_addClose.setVisibility(View.GONE);
+            }else if(status.equalsIgnoreCase("5")) {
+                //status Not OCC ga muncul apa2
+                Log.d("DetailActivity","Responsible: masuk sini 5");
+                fab.setVisibility(View.GONE);
                 tv_addApprove.setVisibility(View.GONE);
                 fab_addApprove.setVisibility(View.GONE);
                 tv_addProgress.setVisibility(View.GONE);
@@ -227,6 +241,20 @@ boolean isOpen = false;
             }else if(status.equalsIgnoreCase("3")) {
                 //status Closed hanya muncul add follow aja
                 Log.d("DetailActivity","TQY: masuk sini 3");
+                fab.setVisibility(View.GONE);
+                tv_addApprove.setVisibility(View.GONE);
+                fab_addApprove.setVisibility(View.GONE);
+                tv_addProgress.setVisibility(View.GONE);
+                fab_addProgress.setVisibility(View.GONE);
+                tv_addPurpose.setVisibility(View.GONE);
+                fab_addPurpose.setVisibility(View.GONE);
+                tv_addClose.setVisibility(View.GONE);
+                fab_addClose.setVisibility(View.GONE);
+            }
+            else if(status.equalsIgnoreCase("5")) {
+                //status Not IOR hanya muncul add follow aja
+                Log.d("DetailActivity","TQY: masuk sini 5");
+                fab.setVisibility(View.GONE);
                 tv_addApprove.setVisibility(View.GONE);
                 fab_addApprove.setVisibility(View.GONE);
                 tv_addProgress.setVisibility(View.GONE);
@@ -316,8 +344,64 @@ boolean isOpen = false;
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+                builder.setIcon(R.drawable.ic_send_24dp);
                 builder.setMessage("Approve Laporan IOR ?")
-                        .setNegativeButton("No",null)
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                /// Kalo Di Tolak sama TQY ngirim occ_id & status waiting ke NOT OCC, status default 1
+
+                                String url = "http://" + getApplicationContext().getString(R.string.ip_default) + "/API_IOR/update_ior_status.php";
+                                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Log.d("DetailActivity", "onResponse Approve : "+response);
+                                        Toast.makeText(getApplicationContext(),
+                                                "Approve "+response, Toast.LENGTH_SHORT).show();
+                                        finish();
+                                        startActivity(getIntent());
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                                            Toast.makeText(getApplicationContext(),
+                                                    "Koneksi Timeout , Silahkan Coba Kembali", Toast.LENGTH_SHORT).show();
+                                        } else if (error instanceof ServerError) {
+                                            Toast.makeText(getApplicationContext(),
+                                                    "Server Mengalami Masalah , Silahkan Coba Kembali", Toast.LENGTH_SHORT).show();
+                                        } else if (error instanceof NetworkError) {
+                                            Toast.makeText(getApplicationContext(),
+                                                    "Jaringan Mengalami Masalah, Silahkan Coba Kembali", Toast.LENGTH_SHORT).show();
+                                        }else{
+                                            Toast.makeText(getApplicationContext(),
+                                                    "Gagal , Silahkan Coba Kembali", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        error.printStackTrace();
+                                    }
+                                })
+                                {
+                                    @Override
+                                    protected Map<String, String> getParams() throws AuthFailureError {
+                                        HashMap<String, String> hashMap = new HashMap<>();
+                                        hashMap.put("occ_id", occ_id);
+                                        hashMap.put("occ_status", "5");
+                                        return hashMap;
+                                    }
+
+
+                                }
+                                        ;
+
+                                stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                                        5000,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                                MySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+
+                            }
+                        })
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -620,7 +704,6 @@ boolean isOpen = false;
                 status = "Waiting to close";
                 btnstatus.setBackgroundResource(R.drawable.rect_progress);
             }
-
 
         }
 

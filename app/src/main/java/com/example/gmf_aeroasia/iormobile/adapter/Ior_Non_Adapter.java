@@ -41,7 +41,7 @@ public class Ior_Non_Adapter extends RecyclerView.Adapter<Ior_Non_Adapter.MyView
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.from(parent.getContext()).inflate(R.layout.activity_item_sendior, parent, false);
+        View view = inflater.from(parent.getContext()).inflate(R.layout.activity_item_nonior, parent, false);
 
         MyViewHolder viewHolder = new MyViewHolder(view);
         return viewHolder;
@@ -74,7 +74,6 @@ public class Ior_Non_Adapter extends RecyclerView.Adapter<Ior_Non_Adapter.MyView
         }else if(info_occ.occ_status.equals("4")){
             status = "Over Due";
             holder.vh_status.setBackgroundResource(R.drawable.rect_overdue);
-
         }else if(info_occ.occ_status.equals("5")){
             status = "Not OCC";
             holder.vh_status.setBackgroundResource(R.drawable.rect_overdue);

@@ -559,8 +559,11 @@ public class CreateIORActivity extends AppCompatActivity {
 
                     try {
                         if(response.getString("code").contains(CODE_SUCCES)){
-                            finish();
+                            Log.d(TAG, "onResponse sukses: "+response);
+
                             Toast.makeText(CreateIORActivity.this, "Report Success", Toast.LENGTH_SHORT).show();
+                            finish();
+                            startActivity(getIntent());
                         }
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();

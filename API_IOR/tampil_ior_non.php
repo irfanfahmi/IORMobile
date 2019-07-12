@@ -7,7 +7,7 @@ $type="users";
 if (isset($_POST['key'])) {
     $key = $_POST["key"];
  if ($type == 'users') {
-        $query = "SELECT * FROM `tbl_occ` WHERE `created_by_name` LIKE '%$name%' AND `occ_status` LIKE '%$status%' ORDER BY occ_id ASC";
+        $query = "SELECT * FROM `tbl_occ` WHERE `created_by_name` LIKE '%$name%' AND `occ_status` LIKE '%$status%' ORDER BY `occ_date` DESC ";
         $result = mysqli_query($db, $query);
         // print_r($result);
         // exit();
@@ -41,7 +41,7 @@ if (isset($_POST['key'])) {
      }
 } else {
    if ($type == 'users') {
-      $query = "SELECT * FROM `tbl_occ` WHERE `created_by_name` LIKE '%$name%' AND `occ_status` LIKE '%$status%' ORDER BY occ_id ASC";
+      $query = "SELECT * FROM `tbl_occ` WHERE `created_by_name` LIKE '%$name%' AND `occ_status` LIKE '%$status%' ORDER BY `occ_date` DESC ";
         $result = mysqli_query($db, $query);
         $response = array();
         while( $row = mysqli_fetch_assoc($result) ){

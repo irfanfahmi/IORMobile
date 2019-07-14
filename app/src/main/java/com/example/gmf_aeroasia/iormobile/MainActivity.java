@@ -276,4 +276,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(MainActivity.this, ior_non.class);
         startActivity(intent);
     }
+
+    public void klikhome(MenuItem item) {
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void klikrecive(MenuItem item) {
+        Intent intent = new Intent(MainActivity.this, ior_recived.class);
+        startActivity(intent);
+
+    }
+
+    public void kliksend(MenuItem item) {
+        Intent intent = new Intent(MainActivity.this, ior_send.class);
+        startActivity(intent);
+    }
+
+    public void kliknon(MenuItem item) {
+        Intent intent = new Intent(MainActivity.this, ior_non.class);
+        startActivity(intent);
+    }
 }

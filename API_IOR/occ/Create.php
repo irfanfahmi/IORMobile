@@ -8,7 +8,7 @@ include_once '../config/Database.php';
 include_once '../objects/OCC.php';
 $database = new Database();
 $db = $database->getConnection();
-$con = mysqli_connect("localhost","root","",,"190204_db_ior");
+$con = mysqli_connect("localhost","root","","190204_db_ior");
 $occ = new OCC($db);
 $data = json_decode(file_get_contents("php://input"));
 $occ_resp=array();

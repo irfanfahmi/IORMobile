@@ -15,10 +15,17 @@
         android:layout_height="?attr/actionBarSize"
         app:theme="@style/AppTheme.Toolbar">
     </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh_items"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recylcerViewr">
     </android.support.v7.widget.RecyclerView>
 
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

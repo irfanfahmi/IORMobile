@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/asd" android:title="Home" android:icon="@drawable/ic_home" />
-    <item android:id="@+id/sd" android:title="IOR Recive" android:icon="@drawable/ic_inbox_primary_24dp" />
-    <item android:id="@+id/yyt" android:title="IOR Send" android:icon="@drawable/ic_send_ior" />
-    <item android:id="@+id/tsd" android:title="Non IOR" android:icon="@drawable/ic_non_ior" />
+    <item android:id="@+id/home" android:title="Home" android:icon="@drawable/ic_home" android:onClick="klikhome" />
+    <item android:id="@+id/ior_recive" android:title="IOR Recive" android:icon="@drawable/ic_inbox_primary_24dp" android:onClick="klikrecive" />
+    <item android:id="@+id/ior_send" android:title="IOR Send" android:icon="@drawable/ic_send_ior" android:onClick="kliksend" />
+    <item android:id="@+id/ior_non" android:title="Non IOR" android:icon="@drawable/ic_non_ior" android:onClick="kliknon" />
     <item android:id="@+id/logout" android:title="Logout" android:icon="@drawable/ic_sign_out" android:onClick="kliklogout"/>
 
 </menu>

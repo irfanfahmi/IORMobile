@@ -210,8 +210,8 @@ boolean isOpen = false;
                 //kalo status Open tombol progress aja tampil lainya gak
                 tv_addApprove.setVisibility(View.GONE);
                 fab_addApprove.setVisibility(View.GONE);
-//                tv_addProgress.setVisibility(View.VISIBLE);
-//                fab_addProgress.setVisibility(View.VISIBLE);
+                tv_addProgress.setVisibility(View.GONE);
+                fab_addProgress.setVisibility(View.GONE);
                 tv_addFollow.setVisibility(View.GONE);
                 fab_addFollow.setVisibility(View.GONE);
                 tv_addPurpose.setVisibility(View.GONE);

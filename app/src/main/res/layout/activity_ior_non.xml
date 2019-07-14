@@ -21,9 +21,15 @@
         android:gravity="center"
         android:text="No Data"
         android:textSize="24dp"/>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh_items"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/recylcerViews">
     </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

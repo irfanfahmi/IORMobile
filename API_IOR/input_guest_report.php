@@ -75,14 +75,20 @@ if (!$db) {
     $dir = 'attachment/'.$sub_lapor.".jpg";
 
     file_put_contents($dir,$decodegambar);
-
-              
+    $now = DateTime::createFromFormat('U.u', microtime(true));
+    $query1 = "SELECT * FROM tbl_occ WHERE MONTH(created_date) = MONTH(CURRENT_DATE)";
+    $part_no_occ = $now->format('m/Y');
+    $report_in_month = mysqli_query($db, $query1); 
+    $report_now = mysqli_num_rows($report_in_month) + 1;
+    $no_occ = sprintf("%03d",$report_now)."/".$part_no_occ;
+    $status = "0"; //status open default 1
+  
   //file_put_contents($pathImage, $dataBase64);
 
        /// move_uploaded_file($file_tmp,$dir);
         
-        $query = "INSERT INTO tbl_occ(occ_sub,occ_detail,occ_reff,ReportedDate,created_hide, attachment, created_by_name, created_by_unit) 
-        VALUES('$sub_lapor','$des_lapor','$ref_lapor','$date_lapor','$porter_lapor','$dir','$nama_guest','$unit_guest')" or die(mysql_error());
+        $query = "INSERT INTO tbl_occ(occ_status,occ_no,occ_sub,occ_detail,occ_reff,ReportedDate,created_hide, attachment, created_by_name, created_by_unit) 
+        VALUES('$status','$no_occ','$sub_lapor','$des_lapor','$ref_lapor','$date_lapor','$porter_lapor','$dir','$nama_guest','$unit_guest')" or die(mysql_error());
         $sql = mysqli_query($db, $query);
        
      if($query)  

@@ -6,9 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -152,6 +151,7 @@ public class CreateIORActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_ior);
         ButterKnife.bind(this);
 
+        cameraPhoto = new CameraPhoto(getApplicationContext());
 
         initRealm();
         showButtonBack();
@@ -164,7 +164,8 @@ public class CreateIORActivity extends AppCompatActivity {
         initSpinnerLvlType();
     }
     void initCameraPhoto(){
-        cameraPhoto = new CameraPhoto(this);
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         try {
             startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA);
             cameraPhoto.addToGallery();

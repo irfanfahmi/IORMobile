@@ -106,9 +106,10 @@ boolean isOpen = false;
         }
         String unit = getprefunit();
 
-        final String unitdinas = unit.substring(0,2);
+        final String unitdinas = unit.substring(0,3);
         // Cek tombol progress berdasarkan Dinas TQ aja
-        if (!unitdinas.equalsIgnoreCase("TQ")){
+        //Selain BUKAN TQY NGGAK BISA APPROVE
+        if (!unit.equalsIgnoreCase("TQY")){
             // untuk Responsible
             Log.d("DetailActivity","RESPONSIBLE UNIT MASUK SINI");
 

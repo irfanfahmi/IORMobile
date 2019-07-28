@@ -44,7 +44,7 @@
                 android:fontFamily="@font/opensans_bold"
                 android:text="To"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text1" />
+                app:layout_constraintTop_toBottomOf="@id/bt_photo" />
 
             <Spinner
                 android:id="@+id/sp_to"
@@ -213,12 +213,12 @@
                 app:layout_constraintDimensionRatio="16:9"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_est_finish" />
+                app:layout_constraintTop_toBottomOf="@id/text1" />
 
             <Button
                 android:id="@+id/bt_photo"
                 android:layout_width="0dp"
-                android:text="PHOTO"
+                android:text="Capture P"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_menu_camera"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -233,7 +233,7 @@
                 android:drawableLeft="@drawable/ic_menu_gallery"
                 app:layout_constraintLeft_toRightOf="@id/bt_photo"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_report" />
+                app:layout_constraintTop_toBottomOf="@id/iv_report"/>
 
             <TextView
                 android:id="@+id/text10"
@@ -243,7 +243,7 @@
                 android:fontFamily="@font/opensans_bold"
                 android:text="Level. Type"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/bt_photo" />
+                app:layout_constraintTop_toBottomOf="@id/et_est_finish" />
 
             <Spinner
                 android:id="@+id/sp_lvl_type"

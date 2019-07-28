@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -113,8 +114,9 @@ public class ReportGuestActivity extends AppCompatActivity {
         bt_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                StrictMode.setVmPolicy(builder.build());
                 try {
-
                     startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
                     cameraPhoto.addToGallery();
                 } catch (IOException e) {

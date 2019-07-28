@@ -11,6 +11,7 @@ import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -53,6 +54,8 @@ import com.kosalgeek.android.photoutil.ImageLoader;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -510,6 +513,20 @@ public class CreateIORActivity extends AppCompatActivity {
         return valid;
     }
 
+    public String getBase64(String path){
+        String base64 = "";
+        try{
+            File file = new File(path);
+            byte[] buffer = new byte[(int) file.length() + 100];
+            @SuppressWarnings("resource")
+            int length = new FileInputStream(file).read(buffer);
+            base64 = Base64.encodeToString(buffer, 0, length, Base64.DEFAULT);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return base64;
+    }
+
     void sendReport(){
         if(validate()){
             dialogLoading = ProgressDialog.show(this, "",
@@ -543,7 +560,7 @@ public class CreateIORActivity extends AppCompatActivity {
             data.put("occ_ambiguity",stringAmbiguity);
             data.put("occ_date",etOccDate.getText().toString());
             data.put("estfinish",etOccDate.getText().toString());
-            data.put("attachment",stringImage);
+            data.put("attachment",getBase64(path));
             data.put("occ_level_type",spLvlType.getSelectedItem().toString());
             data.put("occ_risk_index",riskIndex);
             data.put("occ_detail",etDesc.getText().toString());

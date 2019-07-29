@@ -36,6 +36,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.gmf_aeroasia.iormobile.FileOpen;
 import com.example.gmf_aeroasia.iormobile.Login.LoginActivity;
 import com.example.gmf_aeroasia.iormobile.MySingleton2;
 import com.example.gmf_aeroasia.iormobile.R;
@@ -47,7 +48,6 @@ import com.example.gmf_aeroasia.iormobile.model.SubCategory;
 import com.example.gmf_aeroasia.iormobile.model.SubCategorySpec;
 import com.example.gmf_aeroasia.iormobile.model.Unit;
 import com.kosalgeek.android.photoutil.CameraPhoto;
-import com.kosalgeek.android.photoutil.GalleryPhoto;
 import com.kosalgeek.android.photoutil.ImageBase64;
 import com.kosalgeek.android.photoutil.ImageLoader;
 
@@ -55,6 +55,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -135,7 +136,7 @@ public class CreateIORActivity extends AppCompatActivity {
 
 
     CameraPhoto cameraPhoto;
-    GalleryPhoto galleryPhoto;
+    FileOpen galleryPhoto;
     RequestQueue queue;
     ProgressDialog dialogLoading;
     SharedPreferences sharedP;
@@ -146,6 +147,8 @@ public class CreateIORActivity extends AppCompatActivity {
 
     private static final int CAMERA = 1001;
     private static final int GALLERY = 1002;
+    @BindView(R.id.tv_name_file)
+    TextView tvNameFile;
 
 
     @Override
@@ -166,7 +169,8 @@ public class CreateIORActivity extends AppCompatActivity {
         initSpinnerProbability();
         initSpinnerLvlType();
     }
-    void initCameraPhoto(){
+
+    void initCameraPhoto() {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         try {
@@ -179,9 +183,13 @@ public class CreateIORActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(resultCode == RESULT_OK){
-            switch (requestCode){
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
                 case CAMERA:
+                    if (ivReport.getVisibility() == View.GONE) {
+                        ivReport.setVisibility(View.VISIBLE);
+                        tvNameFile.setVisibility(View.GONE);
+                    }
                     path = cameraPhoto.getPhotoPath();
                     Glide.with(this)
                             .load(path)
@@ -189,18 +197,28 @@ public class CreateIORActivity extends AppCompatActivity {
                             .into(ivReport);
                     break;
                 case GALLERY:
-                    galleryPhoto.setPhotoUri(data.getData());
+                    galleryPhoto.setFileUri(data.getData());
                     path = galleryPhoto.getPath();
-                    Glide.with(this)
-                            .load(path)
-                            .fitCenter()
-                            .into(ivReport);
+                    File file = new File(path);
+                    if (new ImageFileFilter().accept(file)) {
+                        ivReport.setVisibility(View.VISIBLE);
+                        tvNameFile.setVisibility(View.GONE);
+                        Glide.with(this)
+                                .load(path)
+                                .fitCenter()
+                                .into(ivReport);
+                    } else {
+                        tvNameFile.setText("File : "+file.getName());
+                        ivReport.setVisibility(View.GONE);
+                        tvNameFile.setVisibility(View.VISIBLE);
+                    }
+
                     break;
             }
         }
     }
 
-    void showButtonBack(){
+    void showButtonBack() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -212,20 +230,21 @@ public class CreateIORActivity extends AppCompatActivity {
         });
     }
 
-    void getPref(){
+    void getPref() {
         sharedP = getSharedPreferences(LoginActivity.PREF, Context.MODE_PRIVATE);
-        if(sharedP == null){
+        if (sharedP == null) {
             Log.d(TAG, "getPref: SharedPref Kosong");
-        }else{
-            Log.d(TAG, "getPref Date: "+sharedP.getAll().toString());
+        } else {
+            Log.d(TAG, "getPref Date: " + sharedP.getAll().toString());
         }
     }
-    void initGalleryPhoto(){
-        galleryPhoto = new GalleryPhoto(this);
-        startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY);
+
+    void initGalleryPhoto() {
+        galleryPhoto = new FileOpen(this);
+        startActivityForResult(galleryPhoto.openStorageIntent(), GALLERY);
     }
 
-    void initRealm(){
+    void initRealm() {
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration
                 .Builder()
@@ -252,12 +271,12 @@ public class CreateIORActivity extends AppCompatActivity {
     public void getDataSpinner() {
         String ip = getApplicationContext().getString(R.string.ip_default);
         final String[] listUrl = new String[]{
-                "http://"+ip+"/API_IOR/unit/Read.php",
-                "http://"+ip+"/API_IOR/category/Read.php",
-                "http://"+ip+"/API_IOR/subcategory/Read.php",
-                "http://"+ip+"/API_IOR/subcategoryspec/Read.php",
-                "http://"+ip+"/API_IOR/severity/Read.php",
-                "http://"+ip+"/API_IOR/probability/Read.php",
+                "http://" + ip + "/API_IOR/unit/Read.php",
+                "http://" + ip + "/API_IOR/category/Read.php",
+                "http://" + ip + "/API_IOR/subcategory/Read.php",
+                "http://" + ip + "/API_IOR/subcategoryspec/Read.php",
+                "http://" + ip + "/API_IOR/severity/Read.php",
+                "http://" + ip + "/API_IOR/probability/Read.php",
         };
         final Class[] listClass = new Class[]{
                 Unit.class,
@@ -266,7 +285,7 @@ public class CreateIORActivity extends AppCompatActivity {
                 SubCategorySpec.class,
                 Severity.class,
                 Probability.class};
-        for(int i = 0; i < listUrl.length; i++){
+        for (int i = 0; i < listUrl.length; i++) {
             final int finalI = i;
             StringRequest request = new StringRequest(Request.Method.GET, listUrl[i], new Response.Listener<String>() {
                 @Override
@@ -316,7 +335,7 @@ public class CreateIORActivity extends AppCompatActivity {
         });
     }
 
-    public void initSpinnerCategory(){
+    public void initSpinnerCategory() {
         spinnerAdapterCategory = new GeneralSpinnerAdapter<Category>(this, Category.getAllCategory(realm)) {
             @Override
             public String getEntryText(int position) {
@@ -329,7 +348,7 @@ public class CreateIORActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 category = spinnerAdapterCategory.getItem(position);
-                initSpinnerSubCategory("0"+category.getCat_id());
+                initSpinnerSubCategory("0" + category.getCat_id());
 
             }
 
@@ -340,7 +359,7 @@ public class CreateIORActivity extends AppCompatActivity {
         });
     }
 
-    public void initSpinnerSubCategory(String id){
+    public void initSpinnerSubCategory(String id) {
         spinnerAdapterSubCategory = new GeneralSpinnerAdapter<SubCategory>(this, SubCategory.getSubCategoryById(realm, id)) {
             @Override
             public String getEntryText(int position) {
@@ -362,7 +381,7 @@ public class CreateIORActivity extends AppCompatActivity {
         });
     }
 
-    public void initSpinnerSubCategorySpec(String id){
+    public void initSpinnerSubCategorySpec(String id) {
         spinnerAdapterSub2Category = new GeneralSpinnerAdapter<SubCategorySpec>(this, SubCategorySpec.getSubCategorySpecById(realm, id)) {
             @Override
             public String getEntryText(int position) {
@@ -383,7 +402,7 @@ public class CreateIORActivity extends AppCompatActivity {
         });
     }
 
-    public void initSpinnerSeverity(){
+    public void initSpinnerSeverity() {
         spinnerAdapterSeverity = new GeneralSpinnerAdapter<Severity>(this, Severity.getAllSeverity(realm)) {
             @Override
             public String getEntryText(int position) {
@@ -404,13 +423,13 @@ public class CreateIORActivity extends AppCompatActivity {
         });
     }
 
-    public void initSpinnerProbability(){
+    public void initSpinnerProbability() {
         Log.d("Cek", "initSpinnerProbability: ");
 
         spinnerAdapterProbability = new GeneralSpinnerAdapter<Probability>(this, Probability.getAllProbability(realm)) {
             @Override
             public String getEntryText(int position) {
-                Log.d("Cek", "getEntryText: "+getData().get(position).getProbability_value().toString());
+                Log.d("Cek", "getEntryText: " + getData().get(position).getProbability_value().toString());
                 return getData().get(position).getProbability_value();
 
             }
@@ -419,7 +438,7 @@ public class CreateIORActivity extends AppCompatActivity {
         spCatastrophic.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("Cek", "onItemSelected: "+spinnerAdapterProbability.getData().get(position).toString());
+                Log.d("Cek", "onItemSelected: " + spinnerAdapterProbability.getData().get(position).toString());
 
                 probability = spinnerAdapterProbability.getData().get(position);
             }
@@ -431,13 +450,13 @@ public class CreateIORActivity extends AppCompatActivity {
         });
     }
 
-    public void initSpinnerLvlType(){
+    public void initSpinnerLvlType() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.arr_lvl_type, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spLvlType.setAdapter(adapter);
     }
 
-    boolean validate(){
+    boolean validate() {
         boolean valid = true;
         String send_to = unit.getUnit();
         String occ_sub = etSubject.getText().toString();
@@ -452,87 +471,87 @@ public class CreateIORActivity extends AppCompatActivity {
         String risk_index = unit.getUnit();
         String detail = etDesc.getText().toString();
 
-        if(send_to.isEmpty()){
+        if (send_to.isEmpty()) {
             ((TextView) spTo.getSelectedView()).setError("");
             valid = false;
         }
-        if(occ_sub.isEmpty()){
+        if (occ_sub.isEmpty()) {
             etSubject.setError("");
             valid = false;
         }
-        if(occ_category.isEmpty()){
+        if (occ_category.isEmpty()) {
             ((TextView) spCategory.getSelectedView()).setError("");
             valid = false;
         }
-        if(sub_category.isEmpty()){
+        if (sub_category.isEmpty()) {
             ((TextView) spSub1category.getSelectedView()).setError("");
             valid = false;
         }
-        if(category_spec.isEmpty()){
+        if (category_spec.isEmpty()) {
             ((TextView) spSub2category.getSelectedView()).setError("");
             valid = false;
         }
-        if(occ_category.isEmpty()){
+        if (occ_category.isEmpty()) {
             ((TextView) spCategory.getSelectedView()).setError("");
             valid = false;
         }
-        if(occ_category.isEmpty()){
+        if (occ_category.isEmpty()) {
             ((TextView) spCategory.getSelectedView()).setError("");
             valid = false;
         }
-        if(wrapRb.getCheckedRadioButtonId() == -1){
+        if (wrapRb.getCheckedRadioButtonId() == -1) {
             rbYes.setError("");
             rbNo.setError("");
             valid = false;
         }
-        if(date.isEmpty()){
+        if (date.isEmpty()) {
             etOccDate.setError("");
             valid = false;
         }
-        if(estfinish.isEmpty()){
+        if (estfinish.isEmpty()) {
             etEstFinish.setError("");
             valid = false;
         }
-        if(path == null){
+        if (path == null) {
             Toast.makeText(this, "You must upload some image", Toast.LENGTH_SHORT).show();
             valid = false;
         }
-        if(lvl_type.isEmpty()){
+        if (lvl_type.isEmpty()) {
             ((TextView) spLvlType.getSelectedView()).setError("");
             valid = false;
         }
-        if(risk_index.isEmpty()){
+        if (risk_index.isEmpty()) {
             ((TextView) spCatastrophic.getSelectedView()).setError("");
             ((TextView) spRiskIndex.getSelectedView()).setError("");
             valid = false;
         }
-        if(detail.isEmpty()){
+        if (detail.isEmpty()) {
             etDesc.setError("");
             valid = false;
         }
         return valid;
     }
 
-    public String getBase64(String path){
+    public String getBase64(String path) {
         String base64 = "";
-        try{
+        try {
             File file = new File(path);
             byte[] buffer = new byte[(int) file.length() + 100];
             @SuppressWarnings("resource")
             int length = new FileInputStream(file).read(buffer);
             base64 = Base64.encodeToString(buffer, 0, length, Base64.DEFAULT);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return base64;
     }
 
-    void sendReport(){
-        if(validate()){
+    void sendReport() {
+        if (validate()) {
             dialogLoading = ProgressDialog.show(this, "",
                     "Loading. Please wait...", true);
             queue = Volley.newRequestQueue(this);
-            String url = "http://"+getResources().getString(R.string.ip_default)+"/API_IOR/occ/Create.php";
+            String url = "http://" + getResources().getString(R.string.ip_default) + "/API_IOR/occ/Create.php";
             try {
                 Bitmap bitmap = ImageLoader.init().from(path).requestSize(1024, 1024).getBitmap();
                 stringImage = ImageBase64.encode(bitmap);
@@ -540,63 +559,63 @@ public class CreateIORActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            if(cbHide.isChecked()){
+            if (cbHide.isChecked()) {
                 hideReport = "1";
-            }else{
+            } else {
                 hideReport = "0";
             }
 
             selectedRadio = wrapRb.getCheckedRadioButtonId();
             RadioButton radioButton = findViewById(selectedRadio);
             stringAmbiguity = radioButton.getText().toString();
-            String riskIndex = probability.getProbability_value()+""+severity.getSeverity_value();
+            String riskIndex = probability.getProbability_value() + "" + severity.getSeverity_value();
 
             HashMap data = new HashMap();
-            data.put("occ_send_to",unit.getUnit());
-            data.put("occ_sub",etSubject.getText().toString());
-            data.put("occ_category",category.getCat_id());
-            data.put("occ_sub_category",subCategory.getCat_sub_id());
-            data.put("occ_sub_spec",subCategorySpec.getCat_sub_spec_id());
-            data.put("occ_ambiguity",stringAmbiguity);
-            data.put("occ_date",etOccDate.getText().toString());
-            data.put("estfinish",etOccDate.getText().toString());
-            data.put("attachment",getBase64(path));
-            data.put("occ_level_type",spLvlType.getSelectedItem().toString());
-            data.put("occ_risk_index",riskIndex);
-            data.put("occ_detail",etDesc.getText().toString());
-            data.put("created_by",sharedP.getString(LoginActivity.KEY_ID, ""));
-            data.put("created_by_unit",sharedP.getString(LoginActivity.KEY_UNIT, ""));
-            data.put("created_by_name",sharedP.getString(LoginActivity.KEY_NAME, ""));
-            data.put("created_hide",hideReport);
+            data.put("occ_send_to", unit.getUnit());
+            data.put("occ_sub", etSubject.getText().toString());
+            data.put("occ_category", category.getCat_id());
+            data.put("occ_sub_category", subCategory.getCat_sub_id());
+            data.put("occ_sub_spec", subCategorySpec.getCat_sub_spec_id());
+            data.put("occ_ambiguity", stringAmbiguity);
+            data.put("occ_date", etOccDate.getText().toString());
+            data.put("estfinish", etOccDate.getText().toString());
+            data.put("attachment", getBase64(path));
+            data.put("occ_level_type", spLvlType.getSelectedItem().toString());
+            data.put("occ_risk_index", riskIndex);
+            data.put("occ_detail", etDesc.getText().toString());
+            data.put("created_by", sharedP.getString(LoginActivity.KEY_ID, ""));
+            data.put("created_by_unit", sharedP.getString(LoginActivity.KEY_UNIT, ""));
+            data.put("created_by_name", sharedP.getString(LoginActivity.KEY_NAME, ""));
+            data.put("created_hide", hideReport);
 
 
-            Log.d(TAG, "sendReport: "+data.toString());
+            Log.d(TAG, "sendReport: " + data.toString());
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(data), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
 
                     try {
-                        if(response.getString("code").contains(CODE_SUCCES)){
-                            Log.d(TAG, "onResponse sukses: "+response);
+                        if (response.getString("code").contains(CODE_SUCCES)) {
+                            Log.d(TAG, "onResponse sukses: " + response);
 
                             Toast.makeText(CreateIORActivity.this, "Report Success", Toast.LENGTH_SHORT).show();
                             finish();
                             startActivity(getIntent());
                         }
                     } catch (JSONException e) {
-                        Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
-                        Log.d(TAG, "onResponse2: "+e);
+                        Log.d(TAG, "onResponse2: " + e);
 
                     }
 
-                    Log.d(TAG, "onResponse: "+response);
+                    Log.d(TAG, "onResponse: " + response);
                     dialogLoading.hide();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.d(TAG, "onErrorResponse: "+error);
+                    Log.d(TAG, "onErrorResponse: " + error);
                     dialogLoading.hide();
                 }
             });
@@ -622,6 +641,19 @@ public class CreateIORActivity extends AppCompatActivity {
             case R.id.bt_submit:
                 sendReport();
                 break;
+        }
+    }
+
+    class ImageFileFilter implements FileFilter {
+        private final String[] okFileExtensions = new String[]{"jpg", "jpeg", "png", "gif"};
+
+        public boolean accept(File file) {
+            for (String extension : okFileExtensions) {
+                if (file.getName().toLowerCase().endsWith(extension)) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 

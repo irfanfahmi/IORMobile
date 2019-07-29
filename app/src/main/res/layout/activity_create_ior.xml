@@ -208,6 +208,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="8dp"
+                android:visibility="visible"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_launcher_background"
                 app:layout_constraintDimensionRatio="16:9"
@@ -215,25 +216,40 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text1" />
 
+            <TextView
+                android:id="@+id/tv_name_file"
+                android:layout_width="0dp"
+                android:text="File Name"
+                android:visibility="gone"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/opensans_bold"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_report"
+                app:layout_constraintBottom_toTopOf="@id/bt_photo"/>
+
             <Button
                 android:id="@+id/bt_photo"
                 android:layout_width="0dp"
-                android:text="Capture P"
+                android:textAllCaps="false"
+                android:text="Capture Picture"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_menu_camera"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/bt_gallery"
-                app:layout_constraintTop_toBottomOf="@id/iv_report" />
+                app:layout_constraintTop_toBottomOf="@id/tv_name_file" />
 
             <Button
                 android:id="@+id/bt_gallery"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Gallery"
+                android:text="Insert File"
+                android:textAllCaps="false"
                 android:drawableLeft="@drawable/ic_menu_gallery"
                 app:layout_constraintLeft_toRightOf="@id/bt_photo"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_report"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_name_file"/>
 
             <TextView
                 android:id="@+id/text10"

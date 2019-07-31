@@ -512,10 +512,10 @@ public class CreateIORActivity extends AppCompatActivity {
             etEstFinish.setError("");
             valid = false;
         }
-        if (path == null) {
-            Toast.makeText(this, "You must upload some image", Toast.LENGTH_SHORT).show();
-            valid = false;
-        }
+//        if (path == null) {
+//            Toast.makeText(this, "You must upload some image", Toast.LENGTH_SHORT).show();
+//            valid = false;
+//        }
         if (lvl_type.isEmpty()) {
             ((TextView) spLvlType.getSelectedView()).setError("");
             valid = false;

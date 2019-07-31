@@ -78,7 +78,6 @@ if(
     !empty($data->occ_ambiguity)&&
     !empty($data->occ_date)&&
     !empty($data->estfinish)&&
-    !empty($data->attachment)&&
     !empty($data->occ_level_type)&&
     !empty($data->occ_risk_index)&&
     !empty($data->occ_detail)&&

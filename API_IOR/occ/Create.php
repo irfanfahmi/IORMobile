@@ -100,45 +100,47 @@ if(
     $decode_file = base64_decode($data->attachment);
     $mime_type = finfo_buffer(finfo_open(), $decode_file, FILEINFO_MIME_TYPE);
     $extension = mime2ext($mime_type);
-    $file = uniqid() .'.'. $extension;
+    $file = "";
     $file_dir = $upload_folder . uniqid() .'.'. $extension;
-    $move_file = file_put_contents($file_dir, $decode_file);
+    
 
     $status = "0"; //status open default 1
     
-    if($move_file){
-        $occ->occ_no = $no_occ;
-        $occ->occ_send_to = $data->occ_send_to;
-        $occ->occ_sub = $data->occ_sub;
-        $occ->occ_category = $data->occ_category;
-        $occ->occ_sub_category = $data->occ_sub_category;
-        $occ->occ_sub_spec = $data->occ_sub_spec;
-        $occ->occ_ambiguity = $data->occ_ambiguity;
-        $occ->occ_date = $data->occ_date;
-        $occ->estfinish = $data->estfinish;
-        $occ->attachment = $file;
-        $occ->occ_level_type = $data->occ_level_type;
-        $occ->occ_risk_index = $data->occ_risk_index;
-        $occ->occ_detail = $data->occ_detail;
-        $occ->occ_status = $status;
-        $occ->created_date = $current_time;
-        $occ->created_by = $data->created_by;
-        $occ->created_by_name = $data->created_by_name;
-        $occ->created_by_unit = $data->created_by_unit;
-        $occ->created_hide = $data->created_hide;
-        if($occ->create()){
-            http_response_code(201);
-            array_push($occ_resp["message"],"OCC was created.");
-            array_push($occ_resp["code"],"201");
-            echo json_encode($occ_resp);
-        } else{
-            http_response_code(503);
-            array_push($occ_resp["message"],"Unable to create OCC.");
-            array_push($occ_resp["code"],"503");
-            echo json_encode($occ_resp);
-        }
+    if(!empty($data->attachment)){
+        $file = uniqid() .'.'. $extension;
+        file_put_contents($file_dir, $decode_file);
     }
     
+    $occ->occ_no = $no_occ;
+    $occ->occ_send_to = $data->occ_send_to;
+    $occ->occ_sub = $data->occ_sub;
+    $occ->occ_category = $data->occ_category;
+    $occ->occ_sub_category = $data->occ_sub_category;
+    $occ->occ_sub_spec = $data->occ_sub_spec;
+    $occ->occ_ambiguity = $data->occ_ambiguity;
+    $occ->occ_date = $data->occ_date;
+    $occ->estfinish = $data->estfinish;
+    $occ->attachment = $file;
+    $occ->occ_level_type = $data->occ_level_type;
+    $occ->occ_risk_index = $data->occ_risk_index;
+    $occ->occ_detail = $data->occ_detail;
+    $occ->occ_status = $status;
+    $occ->created_date = $current_time;
+    $occ->created_by = $data->created_by;
+    $occ->created_by_name = $data->created_by_name;
+    $occ->created_by_unit = $data->created_by_unit;
+    $occ->created_hide = $data->created_hide;
+    if($occ->create()){
+        http_response_code(201);
+        array_push($occ_resp["message"],"OCC was created.");
+        array_push($occ_resp["code"],"201");
+        echo json_encode($occ_resp);
+    } else{
+        http_response_code(503);
+        array_push($occ_resp["message"],"Unable to create OCC.");
+        array_push($occ_resp["code"],"503");
+        echo json_encode($occ_resp);
+    }
 }else{
     http_response_code(400);
     array_push($occ_resp["check"],"some data is null");

@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -49,19 +48,13 @@ import com.example.gmf_aeroasia.iormobile.model.SubCategory;
 import com.example.gmf_aeroasia.iormobile.model.SubCategorySpec;
 import com.example.gmf_aeroasia.iormobile.model.Unit;
 import com.kosalgeek.android.photoutil.CameraPhoto;
-import com.kosalgeek.android.photoutil.ImageBase64;
-import com.kosalgeek.android.photoutil.ImageLoader;
 
-import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -196,8 +189,8 @@ public class CreateIORActivity extends AppCompatActivity {
                         ivReport.setVisibility(View.VISIBLE);
                         tvNameFile.setVisibility(View.GONE);
                     }
-                    uri = data.getData();
                     path = cameraPhoto.getPhotoPath();
+                    uri = Uri.fromFile(new File(path));
                     Glide.with(this)
                             .load(path)
                             .fitCenter()
@@ -583,81 +576,75 @@ public class CreateIORActivity extends AppCompatActivity {
     }
 
     void sendReport() {
-//        if (validate()) {
-//            dialogLoading = ProgressDialog.show(this, "",
-//                    "Loading. Please wait...", true);
-//            queue = Volley.newRequestQueue(this);
-//            String url = "http://" + getResources().getString(R.string.ip_default) + "/API_IOR/occ/Create.php";
-//            try {
-//                Bitmap bitmap = ImageLoader.init().from(path).requestSize(1024, 1024).getBitmap();
-//                stringImage = ImageBase64.encode(bitmap);
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//
-//            if (cbHide.isChecked()) {
-//                hideReport = "1";
-//            } else {
-//                hideReport = "0";
-//            }
-//
-//            selectedRadio = wrapRb.getCheckedRadioButtonId();
-//            RadioButton radioButton = findViewById(selectedRadio);
-//            stringAmbiguity = radioButton.getText().toString();
-//            String riskIndex = probability.getProbability_value() + "" + severity.getSeverity_value();
-//
-//            HashMap data = new HashMap();
-//            data.put("occ_send_to", unit.getUnit());
-//            data.put("occ_sub", etSubject.getText().toString());
-//            data.put("occ_category", category.getCat_id());
-//            data.put("occ_sub_category", subCategory.getCat_sub_id());
-//            data.put("occ_sub_spec", subCategorySpec.getCat_sub_spec_id());
-//            data.put("occ_ambiguity", stringAmbiguity);
-//            data.put("occ_date", etOccDate.getText().toString());
-//            data.put("estfinish", etOccDate.getText().toString());
-//            data.put("attachment", getBase64(path));
-//            data.put("occ_level_type", spLvlType.getSelectedItem().toString());
-//            data.put("occ_risk_index", riskIndex);
-//            data.put("occ_detail", etDesc.getText().toString());
-//            data.put("created_by", sharedP.getString(LoginActivity.KEY_ID, ""));
-//            data.put("created_by_unit", sharedP.getString(LoginActivity.KEY_UNIT, ""));
-//            data.put("created_by_name", sharedP.getString(LoginActivity.KEY_NAME, ""));
-//            data.put("created_hide", hideReport);
-//
-//
-//            Log.d(TAG, "sendReport: " + data.toString());
-//            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(data), new Response.Listener<JSONObject>() {
-//                @Override
-//                public void onResponse(JSONObject response) {
-//
-//                    try {
-//                        if (response.getString("code").contains(CODE_SUCCES)) {
-//                            Log.d(TAG, "onResponse sukses: " + response);
-//
-//                            Toast.makeText(CreateIORActivity.this, "Report Success", Toast.LENGTH_SHORT).show();
-//                            finish();
-//                            startActivity(getIntent());
-//                        }
-//                    } catch (JSONException e) {
-//                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-//                        e.printStackTrace();
-//                        Log.d(TAG, "onResponse2: " + e);
-//
-//                    }
-//
-//                    Log.d(TAG, "onResponse: " + response);
-//                    dialogLoading.hide();
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    Log.d(TAG, "onErrorResponse: " + error);
-//                    dialogLoading.hide();
-//                }
-//            });
-//            queue.add(request);
-//        }
-        Log.d(TAG, "sendReport: "+getBase64(uri));
+        if (validate()) {
+            dialogLoading = ProgressDialog.show(this, "",
+                    "Loading. Please wait...", true);
+            queue = Volley.newRequestQueue(this);
+            String url = "http://" + getResources().getString(R.string.ip_default) + "/API_IOR/occ/Create.php";
+
+            if (cbHide.isChecked()) {
+                hideReport = "1";
+            } else {
+                hideReport = "0";
+            }
+
+            selectedRadio = wrapRb.getCheckedRadioButtonId();
+            RadioButton radioButton = findViewById(selectedRadio);
+            stringAmbiguity = radioButton.getText().toString();
+            String riskIndex = probability.getProbability_value() + "" + severity.getSeverity_value();
+
+            HashMap data = new HashMap();
+            data.put("occ_send_to", unit.getUnit());
+            data.put("occ_sub", etSubject.getText().toString());
+            data.put("occ_category", category.getCat_id());
+            data.put("occ_sub_category", subCategory.getCat_sub_id());
+            data.put("occ_sub_spec", subCategorySpec.getCat_sub_spec_id());
+            data.put("occ_ambiguity", stringAmbiguity);
+            data.put("occ_date", etOccDate.getText().toString());
+            data.put("estfinish", etOccDate.getText().toString());
+            data.put("attachment", getBase64(uri));
+            data.put("occ_level_type", spLvlType.getSelectedItem().toString());
+            data.put("occ_risk_index", riskIndex);
+            data.put("occ_detail", etDesc.getText().toString());
+            data.put("created_by", sharedP.getString(LoginActivity.KEY_ID, ""));
+            data.put("created_by_unit", sharedP.getString(LoginActivity.KEY_UNIT, ""));
+            data.put("created_by_name", sharedP.getString(LoginActivity.KEY_NAME, ""));
+            data.put("created_hide", hideReport);
+
+
+            Log.d(TAG, "sendReport: " + data.toString());
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(data), new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    try {
+                        if (response.getString("code").contains(CODE_SUCCES)) {
+                            Log.d(TAG, "onResponse sukses: " + response);
+
+                            Toast.makeText(CreateIORActivity.this, "Report Success", Toast.LENGTH_SHORT).show();
+                            finish();
+                            startActivity(getIntent());
+                        }
+                    } catch (JSONException e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                        Log.d(TAG, "onResponse2: " + e);
+
+                    }
+
+                    Log.d(TAG, "onResponse: " + response);
+                    dialogLoading.hide();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d(TAG, "onErrorResponse: " + error);
+                    dialogLoading.hide();
+                }
+            });
+            queue.add(request);
+        }
+//        Log.d(TAG, "sendReport: "+getBase64(uri));
     }
 
 

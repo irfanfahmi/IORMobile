@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
@@ -55,11 +56,14 @@ import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -145,6 +149,7 @@ public class CreateIORActivity extends AppCompatActivity {
     String path = null;
     String stringImage, stringAmbiguity, hideReport;
     int selectedRadio;
+    Uri uri;
 
     private static final int CAMERA = 1001;
     private static final int GALLERY = 1002;
@@ -191,6 +196,7 @@ public class CreateIORActivity extends AppCompatActivity {
                         ivReport.setVisibility(View.VISIBLE);
                         tvNameFile.setVisibility(View.GONE);
                     }
+                    uri = data.getData();
                     path = cameraPhoto.getPhotoPath();
                     Glide.with(this)
                             .load(path)
@@ -199,6 +205,7 @@ public class CreateIORActivity extends AppCompatActivity {
                     break;
                 case GALLERY:
                     galleryPhoto.setFileUri(data.getData());
+                    uri = data.getData();
                     path = galleryPhoto.getPath();
                     File file = new File(path);
                     if (new ImageFileFilter().accept(file)) {
@@ -533,96 +540,124 @@ public class CreateIORActivity extends AppCompatActivity {
         return valid;
     }
 
-    public String getBase64(String path) {
+//    public String getBase64(String path) {
+//        String base64 = "";
+//        try {
+//            File file = new File(path);
+//            byte[] buffer = new byte[(int) file.length() + 100];
+//            byte[] b = FileUtils.readFileToByteArray(file);
+//            @SuppressWarnings("resource")
+//            int length = new FileInputStream(file).read(b);
+//            base64 = Base64.encodeToString(b, 0, length, Base64.DEFAULT);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return base64;
+//    }
+
+    public String getBase64(Uri uri){
         String base64 = "";
+        byte[] bytes;
         try {
-            File file = new File(path);
-            byte[] buffer = new byte[(int) file.length() + 100];
-            byte[] b = FileUtils.readFileToByteArray(file);
-            @SuppressWarnings("resource")
-            int length = new FileInputStream(file).read(b);
-            base64 = Base64.encodeToString(b, 0, length, Base64.DEFAULT);
-        } catch (Exception e) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            InputStream in = getContentResolver().openInputStream(uri);
+            bytes = getBytes(in);
+            base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
+            Log.d(TAG, "getBase64: "+base64);
+        }catch (Exception e){
             e.printStackTrace();
         }
         return base64;
     }
 
-    void sendReport() {
-        if (validate()) {
-            dialogLoading = ProgressDialog.show(this, "",
-                    "Loading. Please wait...", true);
-            queue = Volley.newRequestQueue(this);
-            String url = "http://" + getResources().getString(R.string.ip_default) + "/API_IOR/occ/Create.php";
-            try {
-                Bitmap bitmap = ImageLoader.init().from(path).requestSize(1024, 1024).getBitmap();
-                stringImage = ImageBase64.encode(bitmap);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
 
-            if (cbHide.isChecked()) {
-                hideReport = "1";
-            } else {
-                hideReport = "0";
-            }
-
-            selectedRadio = wrapRb.getCheckedRadioButtonId();
-            RadioButton radioButton = findViewById(selectedRadio);
-            stringAmbiguity = radioButton.getText().toString();
-            String riskIndex = probability.getProbability_value() + "" + severity.getSeverity_value();
-
-            HashMap data = new HashMap();
-            data.put("occ_send_to", unit.getUnit());
-            data.put("occ_sub", etSubject.getText().toString());
-            data.put("occ_category", category.getCat_id());
-            data.put("occ_sub_category", subCategory.getCat_sub_id());
-            data.put("occ_sub_spec", subCategorySpec.getCat_sub_spec_id());
-            data.put("occ_ambiguity", stringAmbiguity);
-            data.put("occ_date", etOccDate.getText().toString());
-            data.put("estfinish", etOccDate.getText().toString());
-            data.put("attachment", getBase64(path));
-            data.put("occ_level_type", spLvlType.getSelectedItem().toString());
-            data.put("occ_risk_index", riskIndex);
-            data.put("occ_detail", etDesc.getText().toString());
-            data.put("created_by", sharedP.getString(LoginActivity.KEY_ID, ""));
-            data.put("created_by_unit", sharedP.getString(LoginActivity.KEY_UNIT, ""));
-            data.put("created_by_name", sharedP.getString(LoginActivity.KEY_NAME, ""));
-            data.put("created_hide", hideReport);
-
-
-            Log.d(TAG, "sendReport: " + data.toString());
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(data), new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-
-                    try {
-                        if (response.getString("code").contains(CODE_SUCCES)) {
-                            Log.d(TAG, "onResponse sukses: " + response);
-
-                            Toast.makeText(CreateIORActivity.this, "Report Success", Toast.LENGTH_SHORT).show();
-                            finish();
-                            startActivity(getIntent());
-                        }
-                    } catch (JSONException e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                        Log.d(TAG, "onResponse2: " + e);
-
-                    }
-
-                    Log.d(TAG, "onResponse: " + response);
-                    dialogLoading.hide();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d(TAG, "onErrorResponse: " + error);
-                    dialogLoading.hide();
-                }
-            });
-            queue.add(request);
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
         }
+        return byteBuffer.toByteArray();
+    }
+
+    void sendReport() {
+//        if (validate()) {
+//            dialogLoading = ProgressDialog.show(this, "",
+//                    "Loading. Please wait...", true);
+//            queue = Volley.newRequestQueue(this);
+//            String url = "http://" + getResources().getString(R.string.ip_default) + "/API_IOR/occ/Create.php";
+//            try {
+//                Bitmap bitmap = ImageLoader.init().from(path).requestSize(1024, 1024).getBitmap();
+//                stringImage = ImageBase64.encode(bitmap);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//
+//            if (cbHide.isChecked()) {
+//                hideReport = "1";
+//            } else {
+//                hideReport = "0";
+//            }
+//
+//            selectedRadio = wrapRb.getCheckedRadioButtonId();
+//            RadioButton radioButton = findViewById(selectedRadio);
+//            stringAmbiguity = radioButton.getText().toString();
+//            String riskIndex = probability.getProbability_value() + "" + severity.getSeverity_value();
+//
+//            HashMap data = new HashMap();
+//            data.put("occ_send_to", unit.getUnit());
+//            data.put("occ_sub", etSubject.getText().toString());
+//            data.put("occ_category", category.getCat_id());
+//            data.put("occ_sub_category", subCategory.getCat_sub_id());
+//            data.put("occ_sub_spec", subCategorySpec.getCat_sub_spec_id());
+//            data.put("occ_ambiguity", stringAmbiguity);
+//            data.put("occ_date", etOccDate.getText().toString());
+//            data.put("estfinish", etOccDate.getText().toString());
+//            data.put("attachment", getBase64(path));
+//            data.put("occ_level_type", spLvlType.getSelectedItem().toString());
+//            data.put("occ_risk_index", riskIndex);
+//            data.put("occ_detail", etDesc.getText().toString());
+//            data.put("created_by", sharedP.getString(LoginActivity.KEY_ID, ""));
+//            data.put("created_by_unit", sharedP.getString(LoginActivity.KEY_UNIT, ""));
+//            data.put("created_by_name", sharedP.getString(LoginActivity.KEY_NAME, ""));
+//            data.put("created_hide", hideReport);
+//
+//
+//            Log.d(TAG, "sendReport: " + data.toString());
+//            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(data), new Response.Listener<JSONObject>() {
+//                @Override
+//                public void onResponse(JSONObject response) {
+//
+//                    try {
+//                        if (response.getString("code").contains(CODE_SUCCES)) {
+//                            Log.d(TAG, "onResponse sukses: " + response);
+//
+//                            Toast.makeText(CreateIORActivity.this, "Report Success", Toast.LENGTH_SHORT).show();
+//                            finish();
+//                            startActivity(getIntent());
+//                        }
+//                    } catch (JSONException e) {
+//                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//                        e.printStackTrace();
+//                        Log.d(TAG, "onResponse2: " + e);
+//
+//                    }
+//
+//                    Log.d(TAG, "onResponse: " + response);
+//                    dialogLoading.hide();
+//                }
+//            }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                    Log.d(TAG, "onErrorResponse: " + error);
+//                    dialogLoading.hide();
+//                }
+//            });
+//            queue.add(request);
+//        }
+        Log.d(TAG, "sendReport: "+getBase64(uri));
     }
 
 

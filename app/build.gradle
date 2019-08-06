@@ -28,6 +28,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.3'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     implementation 'com.android.support:design:28.0.0'
+    implementation "com.karumi:dexter:4.2.0"
+    implementation 'commons-io:commons-io:2.5'
     //realm-adapter
     implementation 'io.realm:android-adapters:3.1.0'
     //butterknife

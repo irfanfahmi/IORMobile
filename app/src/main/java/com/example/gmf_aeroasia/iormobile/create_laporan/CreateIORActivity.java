@@ -51,6 +51,7 @@ import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.ImageBase64;
 import com.kosalgeek.android.photoutil.ImageLoader;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -537,9 +538,10 @@ public class CreateIORActivity extends AppCompatActivity {
         try {
             File file = new File(path);
             byte[] buffer = new byte[(int) file.length() + 100];
+            byte[] b = FileUtils.readFileToByteArray(file);
             @SuppressWarnings("resource")
-            int length = new FileInputStream(file).read(buffer);
-            base64 = Base64.encodeToString(buffer, 0, length, Base64.DEFAULT);
+            int length = new FileInputStream(file).read(b);
+            base64 = Base64.encodeToString(b, 0, length, Base64.DEFAULT);
         } catch (Exception e) {
             e.printStackTrace();
         }

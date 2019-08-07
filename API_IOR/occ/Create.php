@@ -100,13 +100,13 @@ if(
     $mime_type = finfo_buffer(finfo_open(), $decode_file, FILEINFO_MIME_TYPE);
     $extension = mime2ext($mime_type);
     $file = "";
-    $file_dir = $upload_folder . uniqid() .'.'. $extension;
+    $file_dir = $upload_folder . $id .'.'. $extension;
     
 
     $status = "0"; //status open default 1
     
     if(!empty($data->attachment)){
-        $file = uniqid() .'.'. $extension;
+        $file = $id .'.'. $extension;
         file_put_contents($file_dir, $decode_file);
     }
     

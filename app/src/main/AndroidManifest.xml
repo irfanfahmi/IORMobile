@@ -24,7 +24,11 @@
             android:name=".Splashscreen"
             android:noHistory="true"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".Login.LoginActivity" />
         <activity android:name=".ReportGuestActivity" />
@@ -41,11 +45,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".create_laporan.CreateIORActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".profil_pegawai.ProfilActivity" />
         <activity android:name=".CommentActivity" />

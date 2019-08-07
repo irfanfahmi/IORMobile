@@ -556,7 +556,6 @@ public class CreateIORActivity extends AppCompatActivity {
             InputStream in = getContentResolver().openInputStream(uri);
             bytes = getBytes(in);
             base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
-            Log.d(TAG, "getBase64: "+base64);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -623,7 +622,7 @@ public class CreateIORActivity extends AppCompatActivity {
 
                             Toast.makeText(CreateIORActivity.this, "Report Success", Toast.LENGTH_SHORT).show();
                             finish();
-                            startActivity(getIntent());
+//                            startActivity(getIntent());
                         }
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();

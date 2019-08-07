@@ -4,15 +4,20 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +28,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -36,19 +48,17 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.gmf_aeroasia.iormobile.service.MyCommand;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.kosalgeek.android.photoutil.CameraPhoto;
-import com.kosalgeek.android.photoutil.GalleryPhoto;
 import com.kosalgeek.android.photoutil.ImageBase64;
 import com.kosalgeek.android.photoutil.ImageLoader;
 import com.kosalgeek.android.photoutil.PhotoLoader;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -61,7 +71,7 @@ public class ReportGuestActivity extends AppCompatActivity {
     private int mYear, mMonth, mDay;
     RadioGroup radiogrup_rg;
     CameraPhoto cameraPhoto;
-    GalleryPhoto galleryPhoto;
+    FileOpen galleryPhoto;
     LinearLayout linearMain;
     RadioButton r_porter;
     final String TAG = "ReportGuestActivity";
@@ -70,7 +80,13 @@ public class ReportGuestActivity extends AppCompatActivity {
     final int CAMERA_REQUEST = 1332;
     Button bt_photo,bt_galllery,bt_submit;
     ProgressDialog dialogLoading;
-
+    String path = null;
+    public Calendar  calendar;
+    public SimpleDateFormat dateFormat;
+    public DatePickerDialog datePickerDialog;
+    private static final int requestCode = 100;
+    TextView tv_nama_file;
+    Context mContext;
     @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -95,25 +111,25 @@ public class ReportGuestActivity extends AppCompatActivity {
         bt_galllery = (Button)findViewById(R.id.bt_gallery);
         linearMain = (LinearLayout)findViewById(R.id.linearMain);
         bt_submit = (Button)findViewById(R.id.submit_report);
+        tv_nama_file = (TextView)findViewById(R.id.tv_name_file_g);
 
-        galleryPhoto = new GalleryPhoto(getApplicationContext());
+//        galleryPhoto = new GalleryPhoto(getApplicationContext());
         cameraPhoto = new CameraPhoto(getApplicationContext());
 
         final MyCommand myCommand = new MyCommand(getApplicationContext());
 
-        ActivityCompat.requestPermissions(ReportGuestActivity.this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED)
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_REQUEST);
 
-        ActivityCompat.requestPermissions(ReportGuestActivity.this,
-                new String[]{Manifest.permission.CAMERA},2);
 
 
 
         bt_galllery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = galleryPhoto.openGalleryIntent();
-                startActivityForResult(in, GALLERY_REQUEST);
+                galleryPhoto = new FileOpen(getApplicationContext());
+                startActivityForResult(galleryPhoto.openStorageIntent(), GALLERY_REQUEST);
 
             }
         });
@@ -139,24 +155,8 @@ public class ReportGuestActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Get Current Date
-                final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
+                datePicker().show();
 
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(ReportGuestActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-
-                                e_date_rg.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-
-                            }
-                        }, mYear, mMonth, mDay);
-                datePickerDialog.show();
             }
         });
 
@@ -311,6 +311,7 @@ public class ReportGuestActivity extends AppCompatActivity {
                             public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
                                 token.continuePermissionRequest();
                             }
+
                         }
         ).check();
     }
@@ -320,7 +321,7 @@ public class ReportGuestActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK){
             if(requestCode == GALLERY_REQUEST){
-                galleryPhoto.setPhotoUri(data.getData());
+                galleryPhoto.setFileUri(data.getData());
                 String photoPath = galleryPhoto.getPath();
                 imageList.add(photoPath);
                 Log.d(TAG, photoPath);
@@ -378,6 +379,94 @@ public class ReportGuestActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    public DatePickerDialog datePicker() {
+        calendar = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(year, month, dayOfMonth);
+                e_date_rg.setText(dateFormat.format(calendar.getTime()));
+
+            }
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        return datePickerDialog;
+    }
+
+    class ImageFileFilter implements FileFilter {
+        private final String[] okFileExtensions = new String[]{"jpg", "jpeg", "png"};
+
+        public boolean accept(File file) {
+            for (String extension : okFileExtensions) {
+                if (file.getName().toLowerCase().endsWith(extension)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    public String getBase64(String path) {
+        String base64 = "";
+        try {
+            File file = new File(path);
+            byte[] buffer = new byte[(int) file.length() + 100];
+            @SuppressWarnings("resource")
+            int length = new FileInputStream(file).read(buffer);
+            base64 = Base64.encodeToString(buffer, 0, length, Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return base64;
+    }
+
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//
+//        if (requestCode == CAMERA_REQUEST) {
+//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+//            } else {
+//                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+//            }
+//        }
+//    }
+
+    /*get Permissions Result*/
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case CAMERA_REQUEST: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    cameraPhoto = new CameraPhoto(getApplicationContext());
+                    try {
+                        cameraPhoto.takePhotoIntent();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    cameraPhoto.addToGallery();
+                }
+            }
+        }
+    }
+
+    /*check permissions  for marshmallow*/
+
+    private static boolean hasPermissions(Context context, String... permissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 //    public boolean validasi() {

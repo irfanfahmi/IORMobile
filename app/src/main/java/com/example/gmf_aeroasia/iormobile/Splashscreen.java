@@ -37,4 +37,5 @@ public class Splashscreen extends AppCompatActivity {
             }
         }, splashInterval);
     }
+
 }

@@ -28,9 +28,8 @@ if(isset($_POST['nama_guest'])){
   $des_lapor =  $_POST["des_lapor"]; 
   $porter_lapor =  $_POST["porter_lapor"]; 
   $foto_report =  $_POST["foto_report"]; 
-  
   reg($_POST['nama_guest']);
- 
+
 }
 else{
     echo "failed";
@@ -38,7 +37,6 @@ else{
 }
 
 function reg($nama_guest){
-
 
 $db = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 
@@ -67,13 +65,14 @@ if (!$db) {
   //$image = $_FILES['gambar_kuliner']['name'];
   //$x = explode('.', $image);
   //$ekstensi = strtolower(end($x));
- // $ukuran = $_FILES['gambar_kuliner']['size'];
+  // $ukuran = $_FILES['gambar_kuliner']['size'];
   
 
-   $decodegambar = base64_decode($foto_report);
-   //$file_tmp = base64_decode($_FILES['gambar_kuliner']['tmp_name']) ;  
-    $dir = 'attachment/'.$sub_lapor.".jpg";
 
+    $decodegambar = base64_decode($foto_report);
+    //$file_tmp = base64_decode($_FILES['gambar_kuliner']['tmp_name']) ;  
+     $dir = 'attachment/'.$sub_lapor.".jpg";
+    $potofile = $sub_lapor.".jpg";
     file_put_contents($dir,$decodegambar);
     $now = DateTime::createFromFormat('U.u', microtime(true));
     $query1 = "SELECT * FROM tbl_occ WHERE MONTH(created_date) = MONTH(CURRENT_DATE)";
@@ -82,16 +81,15 @@ if (!$db) {
     $report_now = mysqli_num_rows($report_in_month) + 1;
     $no_occ = sprintf("%03d",$report_now)."/".$part_no_occ;
     $status = "0"; //status open default 1
-  
-  //file_put_contents($pathImage, $dataBase64);
-
-       /// move_uploaded_file($file_tmp,$dir);
-        
-        $query = "INSERT INTO tbl_occ(occ_status,occ_no,occ_sub,occ_detail,occ_reff,ReportedDate,created_hide, attachment, created_by_name, created_by_unit) 
-        VALUES('$status','$no_occ','$sub_lapor','$des_lapor','$ref_lapor','$date_lapor','$porter_lapor','$dir','$nama_guest','$unit_guest')" or die(mysql_error());
+  	$porter_lapor="0";
+  	$insertByGuest = $nama_guest."/".$unit_guest;
+  	$current_time = $now->format('Y-m-d H:i:s');
+  	
+        $query = "INSERT INTO tbl_occ(occ_status,occ_no,occ_sub,occ_detail,occ_reff,ReportedDate,created_hide, attachment, insertBy, created_by_unit, created_date, occ_date) 
+        VALUES('$status','$no_occ','$sub_lapor','$des_lapor','$ref_lapor','$date_lapor','$porter_lapor','$potofile','$insertByGuest','$unit_guest','$current_time','$current_time')" or die(mysql_error());
         $sql = mysqli_query($db, $query);
-       
-     if($query)  
+      
+     if($query==true)  
      {  
          echo "Report Success"; 
     }  else  

@@ -1,13 +1,16 @@
 package com.example.gmf_aeroasia.iormobile.Login;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-
-import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -46,8 +49,11 @@ public class LoginActivity extends AppCompatActivity {
     public static final String KEY_ID = "id";
     public static final String KEY_UNIT = "unit";
     public static final String KEY_USER = "username";
+    private static final int requestCode = 100;
 
+    Context mContext;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +72,57 @@ public class LoginActivity extends AppCompatActivity {
         } else {
 
         }
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED)
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 233);
+
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.CAMERA)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(LoginActivity.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1123);
+
+                ActivityCompat.requestPermissions(LoginActivity.this,
+                        new String[]{Manifest.permission.CAMERA},23312);
+
+                ActivityCompat.requestPermissions(LoginActivity.this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1241);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+            // Permission has already been granted
+        }
+
+        ActivityCompat.requestPermissions(LoginActivity.this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
+
+        ActivityCompat.requestPermissions(LoginActivity.this,
+                new String[]{Manifest.permission.CAMERA},2);
+
+        ActivityCompat.requestPermissions(LoginActivity.this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},3);
+
+
+
+//        if (checkSelfPermission(Manifest.permission.CAMERA)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            requestPermissions(new String[]{Manifest.permission.CAMERA},requestCode);
+//        }
 
 
         btn_login.setOnClickListener(new View.OnClickListener() {
@@ -214,23 +271,24 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    @Override
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == requestCode) {
-
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
-
-            } else {
-
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
-
-            }
-
-        }}//end onRequestPermissionsResult
+//    @Override
+//
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//
+//        if (requestCode == requestCode) {
+//
+//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+//
+//            } else {
+//
+//                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+//
+//            }
+//
+//        }}//end onRequestPermissionsResult
 }

@@ -42,7 +42,6 @@ import com.example.gmf_aeroasia.iormobile.Login.LoginActivity;
 import com.example.gmf_aeroasia.iormobile.adapter.Ior_History_Adapter;
 import com.example.gmf_aeroasia.iormobile.create_laporan.CreateIORActivity;
 import com.example.gmf_aeroasia.iormobile.model.occ;
-import com.example.gmf_aeroasia.iormobile.profil_pegawai.ProfilActivity;
 import com.example.gmf_aeroasia.iormobile.service.MySingleton;
 import com.kosalgeek.android.json.JsonConverter;
 
@@ -216,25 +215,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == requestCode) {
-
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
-
-            } else {
-
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
-
-            }
-
-        }}//end onRequestPermissionsResult
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -273,6 +254,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         public void onClick(DialogInterface dialogInterface, int i) {
                             shareEdit.clear();
                             shareEdit.commit();
+                            finish();
 
                             // After logout redirect user to Loing Activity
                             Intent in = new Intent(MainActivity.this, LoginActivity.class);
@@ -290,10 +272,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             alertDialog.show();
     }
 
-    public void klikprofil(View view) {
-        Intent intent = new Intent(MainActivity.this, ProfilActivity.class);
-        startActivity(intent);
-    }
 
     public void klikIORSEND(View view) {
         Intent intent = new Intent(MainActivity.this, ior_send.class);

@@ -11,6 +11,7 @@
         android:id="@+id/toolbarid"
         app:titleTextColor="@color/colorWhite"
         android:layout_width="match_parent"
+        app:title="IOR Recived"
         android:background="@color/colorPrimary"
         android:layout_height="?attr/actionBarSize"
         app:theme="@style/AppTheme.Toolbar">

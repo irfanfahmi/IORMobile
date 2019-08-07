@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         app:titleTextColor="@color/colorWhite"
         android:background="@color/colorPrimary"
+        app:title="Non IOR"
         app:theme="@style/AppTheme.Toolbar"
         android:layout_height="?attr/actionBarSize">
     </android.support.v7.widget.Toolbar>

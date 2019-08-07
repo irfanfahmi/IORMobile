@@ -47,6 +47,66 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Report"
+                        android:fontFamily="@font/opensans_bold"
+                        android:textSize="18sp"
+                        android:layout_marginBottom="10dp"/>
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginBottom="50dp"
+                        android:id="@+id/scrollView">
+                        <LinearLayout
+                            android:layout_gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:id="@+id/linearMain"
+
+                            android:orientation="horizontal"/>
+
+                    </HorizontalScrollView>
+                    <TextView
+                        android:visibility="invisible"
+                        android:layout_gravity="center"
+                        android:id="@+id/tv_name_file_g"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nama File">
+
+                    </TextView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp">
+
+                        <Button
+                            android:layout_margin="2dp"
+                            android:textAllCaps="false"
+                            android:id="@+id/bt_photo"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_menu_camera"
+                            android:text="Capture Picture" />
+
+                        <Button
+                            android:layout_margin="2dp"
+                            android:id="@+id/bt_gallery"
+                            android:layout_width="150dp"
+                            android:textAllCaps="false"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_menu_gallery"
+                            android:text="Insert File" />
+
+
+                    </LinearLayout>
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Identity"
@@ -70,6 +130,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <EditText
+                            android:id="@+id/unit_report"
+                            android:layout_marginTop="2dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/opensans_reguler"
+                            android:hint="Your Work Unit"/>
+                    </android.support.design.widget.TextInputLayout>
+
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <EditText
                             android:id="@+id/email_report"
                             android:layout_marginTop="2dp"
                             android:layout_width="match_parent"
@@ -89,67 +163,6 @@
                             android:fontFamily="@font/opensans_reguler"
                             android:hint="Your Company Name"/>
                     </android.support.design.widget.TextInputLayout>
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <EditText
-                            android:id="@+id/unit_report"
-                            android:layout_marginTop="2dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/opensans_reguler"
-                            android:hint="Your Work Unit"/>
-                    </android.support.design.widget.TextInputLayout>
-
-                    <TextView
-                        android:layout_marginTop="20dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Report"
-                        android:fontFamily="@font/opensans_bold"
-                        android:textSize="18sp"
-                        android:layout_marginBottom="10dp"/>
-                    <HorizontalScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginBottom="50dp"
-                        android:id="@+id/scrollView">
-                        <LinearLayout
-                            android:layout_gravity="center"
-                            android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:id="@+id/linearMain"
-
-                            android:orientation="horizontal"/>
-
-                    </HorizontalScrollView>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:layout_margin="5dp">
-
-                        <Button
-                            android:layout_margin="5dp"
-                            android:id="@+id/bt_photo"
-                            android:layout_width="150dp"
-                            android:layout_height="wrap_content"
-                            android:drawableLeft="@drawable/ic_menu_camera"
-                            android:text="PHOTO" />
-
-                        <Button
-                            android:layout_margin="5dp"
-                            android:id="@+id/bt_gallery"
-                            android:layout_width="150dp"
-                            android:layout_height="wrap_content"
-                            android:drawableLeft="@drawable/ic_menu_gallery"
-                            android:text="Gallery" />
-
-
-                    </LinearLayout>
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -203,17 +216,15 @@
                                     android:text="No"/>
                             </RadioGroup>
                         </LinearLayout>
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+
                         <EditText
                             android:id="@+id/date_report"
                             android:layout_marginTop="2dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/opensans_reguler"
+                            android:editable="false"
                             android:hint="Occurance Date"/>
-                    </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"

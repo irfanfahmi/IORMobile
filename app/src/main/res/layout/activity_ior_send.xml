@@ -10,6 +10,7 @@
         android:id="@+id/toolbarid"
         android:layout_width="match_parent"
         app:titleTextColor="@color/colorWhite"
+        app:title="IOR Send"
         android:background="@color/colorPrimary"
         app:theme="@style/AppTheme.Toolbar"
         android:layout_height="?attr/actionBarSize">

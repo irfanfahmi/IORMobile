@@ -92,9 +92,9 @@ if(
     $report_now = mysqli_num_rows($report_in_month) + 1;
     $part_no_occ = $now->format('m/Y');
     $no_occ = sprintf("%03d",$report_now)."/".$part_no_occ;
-    $id = $now->format('YmdHisu');
     $current_time = $now->format('Y-m-d H:i:s');
 
+    $id = $now->format('YmdHisu');
     $upload_folder = "../attachment/";
     $decode_file = base64_decode($data->attachment);
     $mime_type = finfo_buffer(finfo_open(), $decode_file, FILEINFO_MIME_TYPE);

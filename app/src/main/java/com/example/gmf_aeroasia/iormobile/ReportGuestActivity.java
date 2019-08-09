@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -31,12 +32,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -48,16 +43,22 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.gmf_aeroasia.iormobile.service.MyCommand;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.ImageBase64;
 import com.kosalgeek.android.photoutil.ImageLoader;
 import com.kosalgeek.android.photoutil.PhotoLoader;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -81,6 +82,7 @@ public class ReportGuestActivity extends AppCompatActivity {
     Button bt_photo,bt_galllery,bt_submit;
     ProgressDialog dialogLoading;
     String path = null;
+    Uri uri;
     public Calendar  calendar;
     public SimpleDateFormat dateFormat;
     public DatePickerDialog datePickerDialog;
@@ -249,10 +251,11 @@ public class ReportGuestActivity extends AppCompatActivity {
                             @Override
                             protected Map<String, String> getParams() throws AuthFailureError {
                                 Map<String, String> params = new HashMap<String, String>();
-                                params.put("foto_report", encodedString1);
+                                params.put("foto_report", getBase64(uri));
                                 params.put("nama_guest", e_name_rg.getText().toString());
                                 params.put("email_guest", e_email_rg.getText().toString());
-                                params.put("company_guest", e_company_rg.getText().toString());
+                                params.put("company_guest", e_company_rg.
+                                        getText().toString());
                                 params.put("unit_guest", e_unit_rg.getText().toString());
                                 params.put("sub_lapor", e_sub_rg.getText().toString());
                                 params.put("ref_lapor", e_ref_rg.getText().toString());
@@ -322,6 +325,7 @@ public class ReportGuestActivity extends AppCompatActivity {
         if(resultCode == RESULT_OK){
             if(requestCode == GALLERY_REQUEST){
                 galleryPhoto.setFileUri(data.getData());
+                uri = data.getData();
                 String photoPath = galleryPhoto.getPath();
                 imageList.add(photoPath);
                 Log.d(TAG, photoPath);
@@ -348,6 +352,7 @@ public class ReportGuestActivity extends AppCompatActivity {
                 }
             }else if(requestCode == CAMERA_REQUEST){
                 String photoPath = cameraPhoto.getPhotoPath();
+                uri = Uri.fromFile(new File(photoPath));
                 //ambil nilai lokasi gambar
                 imageList.add(photoPath);
                 Log.d(TAG, photoPath);
@@ -408,18 +413,30 @@ public class ReportGuestActivity extends AppCompatActivity {
         }
     }
 
-    public String getBase64(String path) {
+    public String getBase64(Uri uri){
         String base64 = "";
+        byte[] bytes;
         try {
-            File file = new File(path);
-            byte[] buffer = new byte[(int) file.length() + 100];
-            @SuppressWarnings("resource")
-            int length = new FileInputStream(file).read(buffer);
-            base64 = Base64.encodeToString(buffer, 0, length, Base64.DEFAULT);
-        } catch (Exception e) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            InputStream in = getContentResolver().openInputStream(uri);
+            bytes = getBytes(in);
+            base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
+        }catch (Exception e){
             e.printStackTrace();
         }
         return base64;
+    }
+
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
     }
 
 

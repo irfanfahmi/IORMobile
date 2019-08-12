@@ -33,7 +33,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
@@ -49,7 +48,6 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.kosalgeek.android.photoutil.CameraPhoto;
-import com.kosalgeek.android.photoutil.ImageBase64;
 import com.kosalgeek.android.photoutil.ImageLoader;
 import com.kosalgeek.android.photoutil.PhotoLoader;
 
@@ -192,9 +190,9 @@ public class ReportGuestActivity extends AppCompatActivity {
                         r_porter = (RadioButton) findViewById(selectedId);
                         //menampilkan pesan teks / toast
 
-                        Bitmap bitmap = PhotoLoader.init().from(imagePath).requestSize(128, 128).getBitmap();
-
-                        final String encodedString1 = ImageBase64.encode(bitmap);
+//                        Bitmap bitmap = PhotoLoader.init().from(imagePath).requestSize(128, 128).getBitmap();
+//
+//                        final String encodedString1 = ImageBase64.encode(bitmap);
 
                         String url = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/input_guest_report.php";
 
@@ -269,13 +267,13 @@ public class ReportGuestActivity extends AppCompatActivity {
                             }
                         };
 
-                        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                                5000,
-                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//                        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+//                                10000,
+//                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                         MySingleton2.getmInstance(getBaseContext()).addToRequestque(stringRequest);
 
-                    } catch (FileNotFoundException e) {
+                    } catch (Exception e) {
                         Toast.makeText(getApplicationContext(), "Error while loading image", Toast.LENGTH_SHORT).show();
                     }
                 }

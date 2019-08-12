@@ -74,7 +74,7 @@ if (!$db) {
     //$dir = 'attachment/'.$sub_lapor.".jpg";
     //$potofile = $sub_lapor.".jpg";
     //file_put_contents($dir,$decodegambar);
-
+    $now = DateTime::createFromFormat('U.u', microtime(true));
     $id = $now->format('YmdHisu');
     $upload_folder = "../attachment/";
     $decode_file = base64_decode($foto_report);

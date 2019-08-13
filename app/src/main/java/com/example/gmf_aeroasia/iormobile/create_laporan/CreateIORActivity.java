@@ -1,5 +1,6 @@
 package com.example.gmf_aeroasia.iormobile.create_laporan;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -47,6 +48,11 @@ import com.example.gmf_aeroasia.iormobile.model.Severity;
 import com.example.gmf_aeroasia.iormobile.model.SubCategory;
 import com.example.gmf_aeroasia.iormobile.model.SubCategorySpec;
 import com.example.gmf_aeroasia.iormobile.model.Unit;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 
 import org.json.JSONException;
@@ -60,6 +66,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -170,14 +177,33 @@ public class CreateIORActivity extends AppCompatActivity {
     }
 
     void initCameraPhoto() {
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
-        try {
-            startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA);
-            cameraPhoto.addToGallery();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Dexter.withActivity(this).withPermissions(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE).withListener(
+                new MultiplePermissionsListener(){
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if(report.areAllPermissionsGranted()){
+                            try {
+                                startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA);
+                                cameraPhoto.addToGallery();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }else if(report.isAnyPermissionPermanentlyDenied()){
+
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+
+                }
+        ).check();
+
     }
 
     @Override

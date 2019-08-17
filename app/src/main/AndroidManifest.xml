@@ -19,6 +19,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <uses-library android:name="org.apache.http.legacy"
+            android:required="false">
+
+        </uses-library>
         <activity android:name=".MainActivity" />
         <activity
             android:name=".Splashscreen"
@@ -44,10 +48,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".create_laporan.CreateIORActivity">
-
-        </activity>
-        <activity android:name=".profil_pegawai.ProfilActivity" />
+        <activity android:name=".create_laporan.CreateIORActivity" />
         <activity android:name=".CommentActivity" />
         <activity android:name=".IOR_Send.ior_send" />
         <activity android:name=".IOR_Non.ior_non"></activity>

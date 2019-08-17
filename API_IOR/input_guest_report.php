@@ -75,20 +75,24 @@ if (!$db) {
     //$potofile = $sub_lapor.".jpg";
     //file_put_contents($dir,$decodegambar);
     $now = DateTime::createFromFormat('U.u', microtime(true));
+    $id="";
     $id = $now->format('YmdHisu');
-    $upload_folder = "../attachment/";
+    //$upload_folder = "attachment/";
+    $upload_folder = $id.".jpg";
     $decode_file = base64_decode($foto_report);
+
     $mime_type = finfo_buffer(finfo_open(), $decode_file, FILEINFO_MIME_TYPE);
     $extension = mime2ext($mime_type);
     $file = "";
-    $file_dir = $upload_folder . $id .'.'. $extension;
+    $file_dir = 'attachment/'. $id .'.'. $extension;
+	file_put_contents($file_dir, $decode_file);
 
-    if(!empty($data->attachment)){
-        $file = $id .'.'. $extension;
-        file_put_contents($file_dir, $decode_file);
-    }
+    // if(!empty($data->attachment)){
+    //     $file = $id .'.'. $extension;
+    //     file_put_contents($file_dir, $decode_file);
+    // }
 
-    $now = DateTime::createFromFormat('U.u', microtime(true));
+
     $query1 = "SELECT * FROM tbl_occ WHERE MONTH(created_date) = MONTH(CURRENT_DATE)";
     $part_no_occ = $now->format('m/Y');
     $report_in_month = mysqli_query($db, $query1); 
@@ -100,7 +104,7 @@ if (!$db) {
   	$current_time = $now->format('Y-m-d H:i:s');
   	
         $query = "INSERT INTO tbl_occ(occ_status,occ_no,occ_sub,occ_detail,occ_reff,ReportedDate,created_hide, attachment, insertBy, created_by_unit, created_date, occ_date) 
-        VALUES('$status','$no_occ','$sub_lapor','$des_lapor','$ref_lapor','$date_lapor','$porter_lapor','$file','$insertByGuest','$unit_guest','$current_time','$current_time')" or die(mysql_error());
+        VALUES('$status','$no_occ','$sub_lapor','$des_lapor','$ref_lapor','$date_lapor','$porter_lapor','$upload_folder','$insertByGuest','$unit_guest','$current_time','$current_time')" or die(mysql_error());
         $sql = mysqli_query($db, $query);
       
      if($query==true)  

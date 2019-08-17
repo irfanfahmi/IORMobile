@@ -77,22 +77,33 @@ if (!$db) {
     $now = DateTime::createFromFormat('U.u', microtime(true));
     $id="";
     $id = $now->format('YmdHisu');
-    //$upload_folder = "attachment/";
+    
     $upload_folder = $id.".jpg";
     $decode_file = base64_decode($foto_report);
-
+ 
     $mime_type = finfo_buffer(finfo_open(), $decode_file, FILEINFO_MIME_TYPE);
     $extension = mime2ext($mime_type);
     $file = "";
-    $file_dir = 'attachment/'. $id .'.'. $extension;
+    $uploadFile_database = $id.'-'.$sub_lapor.'.'. $extension;
+    $file_dir = "attachment/".$id.'-'.$sub_lapor.'.'. $extension;
 	file_put_contents($file_dir, $decode_file);
+
+
+     
+    // $uploadFile_folder = $uploadFile_folder . basename( $_FILES['uploaded_file']['name']);
+    // if(move_uploaded_file($_FILES['uploaded_file']['tmp_name'], $uploadFile_folder)) {
+    //     echo "success";
+    // } else{
+    //     echo "fail";
+    // }
+
 
     // if(!empty($data->attachment)){
     //     $file = $id .'.'. $extension;
     //     file_put_contents($file_dir, $decode_file);
     // }
 
-
+   
     $query1 = "SELECT * FROM tbl_occ WHERE MONTH(created_date) = MONTH(CURRENT_DATE)";
     $part_no_occ = $now->format('m/Y');
     $report_in_month = mysqli_query($db, $query1); 
@@ -102,9 +113,13 @@ if (!$db) {
   	$porter_lapor="0";
   	$insertByGuest = $nama_guest."/".$unit_guest;
   	$current_time = $now->format('Y-m-d H:i:s');
+
+  
+
+
   	
         $query = "INSERT INTO tbl_occ(occ_status,occ_no,occ_sub,occ_detail,occ_reff,ReportedDate,created_hide, attachment, insertBy, created_by_unit, created_date, occ_date) 
-        VALUES('$status','$no_occ','$sub_lapor','$des_lapor','$ref_lapor','$date_lapor','$porter_lapor','$upload_folder','$insertByGuest','$unit_guest','$current_time','$current_time')" or die(mysql_error());
+        VALUES('$status','$no_occ','$sub_lapor','$des_lapor','$ref_lapor','$date_lapor','$porter_lapor','$uploadFile_database','$insertByGuest','$unit_guest','$current_time','$current_time')" or die(mysql_error());
         $sql = mysqli_query($db, $query);
       
      if($query==true)  

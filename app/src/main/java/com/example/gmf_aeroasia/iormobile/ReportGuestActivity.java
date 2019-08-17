@@ -1,6 +1,7 @@
 package com.example.gmf_aeroasia.iormobile;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -52,11 +53,16 @@ import com.kosalgeek.android.photoutil.ImageLoader;
 import com.kosalgeek.android.photoutil.PhotoLoader;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -81,6 +87,15 @@ public class ReportGuestActivity extends AppCompatActivity {
     ProgressDialog dialogLoading;
     String path = null;
     Uri uri;
+    //TestFile
+    String upLoadServerUri = null;
+    int serverResponseCode = 0;
+    /**********  File Path *************/
+    final String uploadFilePath = "/mnt/sdcard/";
+    final String uploadFileName = "service_lifecycle.png";
+    String filepath;
+
+
     public Calendar  calendar;
     public SimpleDateFormat dateFormat;
     public DatePickerDialog datePickerDialog;
@@ -122,7 +137,7 @@ public class ReportGuestActivity extends AppCompatActivity {
                 == PackageManager.PERMISSION_DENIED)
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_REQUEST);
 
-
+        upLoadServerUri = "http://"+getApplicationContext().getString(R.string.ip_default)+"/API_IOR/input_guest_report.php";
 
 
         bt_galllery.setOnClickListener(new View.OnClickListener() {
@@ -180,7 +195,10 @@ public class ReportGuestActivity extends AppCompatActivity {
                 dialogLoading = ProgressDialog.show(ReportGuestActivity.this, "",
                         "Loading. Please wait...", true);
 
+               // uploadFile(uploadFilePath + "" + uploadFileName);
 
+                //bikin kondisi file path dari klik kamera masuk kee volley kalo klik galeri file pathnya masuk ke method  uploadFIle
+                uploadFile(filepath);
                 for( String imagePath: imageList){
                     try {
 
@@ -326,6 +344,9 @@ public class ReportGuestActivity extends AppCompatActivity {
                 uri = data.getData();
                 String photoPath = galleryPhoto.getPath();
                 imageList.add(photoPath);
+                Log.d("Cek Path File", "Isinya uri? "+uri);
+                Log.d("Cek Path File", "Isinya photophat? "+photoPath);
+                filepath = photoPath;
                 Log.d(TAG, photoPath);
                 try {
 
@@ -382,6 +403,147 @@ public class ReportGuestActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @SuppressLint("LongLogTag")
+    public int uploadFile(String sourceFileUri) {
+
+
+        String fileName = sourceFileUri;
+
+        HttpURLConnection conn = null;
+        DataOutputStream dos = null;
+        String lineEnd = "\r\n";
+        String twoHyphens = "--";
+        String boundary = "*****";
+        int bytesRead, bytesAvailable, bufferSize;
+        byte[] buffer;
+        int maxBufferSize = 1 * 1024 * 1024;
+        File sourceFile = new File(sourceFileUri);
+
+        if (!sourceFile.isFile()) {
+
+            //dialog.dismiss();
+
+            Log.e("uploadFile", "Source File not exist :"
+                    +uploadFilePath + "" + uploadFileName);
+
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    Log.e("uploadFile", "Source File not exist :"
+                            +uploadFilePath + "" + uploadFileName);
+
+                }
+            });
+
+            return 0;
+
+        }
+        else
+        {
+            try {
+                Log.d(TAG, "uploadFile: Cek URI to Server "+upLoadServerUri);
+                // open a URL connection to the Servlet
+                FileInputStream fileInputStream = new FileInputStream(sourceFile);
+                URL url = new URL(upLoadServerUri);
+
+                // Open a HTTP  connection to  the URL
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setDoInput(true); // Allow Inputs
+                conn.setDoOutput(true); // Allow Outputs
+                conn.setUseCaches(false); // Don't use a Cached Copy
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Connection", "Keep-Alive");
+                conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+                conn.setRequestProperty("uploaded_file", fileName);
+
+                dos = new DataOutputStream(conn.getOutputStream());
+
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
+               // dos.writeBytes("Content-Disposition: form-data; name=uploaded_file; filename="+fileName+"" +lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name="+fileName+";filename="+ fileName + "" + lineEnd);
+                        dos.writeBytes(lineEnd);
+
+                // create a buffer of  maximum size
+                bytesAvailable = fileInputStream.available();
+
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                buffer = new byte[bufferSize];
+
+                // read file and write it into form...
+                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+                while (bytesRead > 0) {
+
+                    dos.write(buffer, 0, bufferSize);
+                    bytesAvailable = fileInputStream.available();
+                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+                }
+
+                // send multipart form data necesssary after file data...
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+                // Responses from the server (code and message)
+                serverResponseCode = conn.getResponseCode();
+                String serverResponseMessage = conn.getResponseMessage();
+
+                Log.i("uploadFile", "HTTP Response is : "
+                        + serverResponseMessage + ": " + serverResponseCode);
+
+                if(serverResponseCode == 200){
+
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+
+//
+//
+//                            Toast.makeText(getApplicationContext(), "File Upload Complete. "+msg,
+//                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                //close the streams //
+                fileInputStream.close();
+                dos.flush();
+                dos.close();
+
+            } catch (MalformedURLException ex) {
+
+//                dialog.dismiss();
+                ex.printStackTrace();
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+
+                        Toast.makeText(getApplicationContext(), "MalformedURLException",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
+            } catch (Exception e) {
+
+//                dialog.dismiss();
+                e.printStackTrace();
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+//
+//                        Toast.makeText(getApplicationContext(), "Got Exception : see logcat ",
+//                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+                Log.e("Upload file to server Exception", "Exception : "+ e.getMessage(), e);
+            }
+//            dialog.dismiss();
+            return serverResponseCode;
+
+        } // End else block
     }
 
     public DatePickerDialog datePicker() {

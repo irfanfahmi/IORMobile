@@ -197,8 +197,11 @@ public class ReportGuestActivity extends AppCompatActivity {
 
                // uploadFile(uploadFilePath + "" + uploadFileName);
 
-                //bikin kondisi file path dari klik kamera masuk kee volley kalo klik galeri file pathnya masuk ke method  uploadFIle
+
                 uploadFile(filepath);
+
+                Log.d("Cek", "isi File Path dari foto: "+uri.toString());
+                Log.d("Cek", "isi File Path dari galeri: "+filepath.toString());
                 for( String imagePath: imageList){
                     try {
 
@@ -374,6 +377,7 @@ public class ReportGuestActivity extends AppCompatActivity {
                 uri = Uri.fromFile(new File(photoPath));
                 //ambil nilai lokasi gambar
                 imageList.add(photoPath);
+                filepath = photoPath;
                 Log.d(TAG, photoPath);
                 try {
                     Bitmap bitmap = ImageLoader.init().from(photoPath).requestSize(512, 512).getBitmap();

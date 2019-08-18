@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -101,6 +102,7 @@ public class ReportGuestActivity extends AppCompatActivity {
     public DatePickerDialog datePickerDialog;
     private static final int requestCode = 100;
     TextView tv_nama_file;
+    HorizontalScrollView HScroll;
     Context mContext;
     @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -127,6 +129,7 @@ public class ReportGuestActivity extends AppCompatActivity {
         linearMain = (LinearLayout)findViewById(R.id.linearMain);
         bt_submit = (Button)findViewById(R.id.submit_report);
         tv_nama_file = (TextView)findViewById(R.id.tv_name_file_g);
+        HScroll = (HorizontalScrollView)findViewById(R.id.scrollView);
 
 //        galleryPhoto = new GalleryPhoto(getApplicationContext());
         cameraPhoto = new CameraPhoto(getApplicationContext());
@@ -351,6 +354,16 @@ public class ReportGuestActivity extends AppCompatActivity {
                 Log.d("Cek Path File", "Isinya photophat? "+photoPath);
                 filepath = photoPath;
                 Log.d(TAG, photoPath);
+                File file = new File(filepath);
+                if (new ImageFileFilter().accept(file)) {
+                    HScroll.setVisibility(View.VISIBLE);
+                    tv_nama_file.setVisibility(View.GONE);
+
+                } else {
+                    tv_nama_file.setText("File : "+file.getName());
+                    HScroll.setVisibility(View.GONE);
+                    tv_nama_file.setVisibility(View.VISIBLE);
+                }
                 try {
 
                     Bitmap bitmap = PhotoLoader.init().from(photoPath).requestSize(512, 512).getBitmap();
@@ -379,6 +392,10 @@ public class ReportGuestActivity extends AppCompatActivity {
                 imageList.add(photoPath);
                 filepath = photoPath;
                 Log.d(TAG, photoPath);
+                if (HScroll.getVisibility() == View.GONE) {
+                    HScroll.setVisibility(View.VISIBLE);
+                    tv_nama_file.setVisibility(View.GONE);
+                }
                 try {
                     Bitmap bitmap = ImageLoader.init().from(photoPath).requestSize(512, 512).getBitmap();
                     //menampilkan image yang udah di pilih

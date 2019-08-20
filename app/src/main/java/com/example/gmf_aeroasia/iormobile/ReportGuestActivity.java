@@ -146,8 +146,9 @@ public class ReportGuestActivity extends AppCompatActivity {
         bt_galllery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                galleryPhoto = new FileOpen(getApplicationContext());
-                startActivityForResult(galleryPhoto.openStorageIntent(), GALLERY_REQUEST);
+//                galleryPhoto = new FileOpen(getApplicationContext());
+//                startActivityForResult(galleryPhoto.openStorageIntent(), GALLERY_REQUEST);
+                openStorage();
 
             }
         });
@@ -339,6 +340,32 @@ public class ReportGuestActivity extends AppCompatActivity {
 
                         }
         ).check();
+    }
+
+    public void openStorage(){
+        Dexter.withActivity(this)
+                .withPermissions(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if(report.areAllPermissionsGranted()){
+                            try {
+                                galleryPhoto = new FileOpen(getApplicationContext());
+                                startActivityForResult(galleryPhoto.openStorageIntent(), GALLERY_REQUEST);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
     }
 
 

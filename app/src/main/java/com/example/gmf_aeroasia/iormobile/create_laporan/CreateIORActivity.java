@@ -7,14 +7,21 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.content.MimeTypeFilter;
+import android.support.v4.graphics.PathUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -68,6 +75,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -175,8 +183,11 @@ public class CreateIORActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_ior);
         ButterKnife.bind(this);
 
-        cameraPhoto = new CameraPhoto(getApplicationContext());
+        cameraPhoto = new CameraPhoto(this);
         upLoadServerUri = "http://" + getResources().getString(R.string.ip_default) + "/API_IOR/occ/Create.php";
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
         initRealm();
         showButtonBack();
@@ -241,16 +252,15 @@ public class CreateIORActivity extends AppCompatActivity {
                 case GALLERY:
                     galleryPhoto.setFileUri(data.getData());
                     uri = data.getData();
-                    path = galleryPhoto.getPath();
-                    filepath = path;
-                    Log.d("Cek Path Camera", "Isinya photophat? "+filepath);
-
-                    File file = new File(path);
-                    if (new ImageFileFilter().accept(file)) {
+//                    path = galleryPhoto.getPath();
+                    File file = new File(data.getData().getPath());
+                    boolean isImage = new ImageFileFilter().accept(file);
+                    Log.d(TAG, "onActivityResult: "+file.getAbsolutePath());
+                    if (isImage) {
                         ivReport.setVisibility(View.VISIBLE);
                         tvNameFile.setVisibility(View.GONE);
                         Glide.with(this)
-                                .load(path)
+                                .load(getRealPathFromURI(this, data.getData()))
                                 .fitCenter()
                                 .into(ivReport);
                     } else {
@@ -264,6 +274,18 @@ public class CreateIORActivity extends AppCompatActivity {
         }
     }
 
+    static String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = context.getContentResolver().query(contentUri, null, null, null, null);
+        if (cursor == null) {
+            return contentUri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int index = cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA);
+            String realPath = cursor.getString(index);
+            cursor.close();
+            return realPath;
+        }
+    }
     void showButtonBack() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -288,6 +310,29 @@ public class CreateIORActivity extends AppCompatActivity {
     void initGalleryPhoto() {
         galleryPhoto = new FileOpen(this);
         startActivityForResult(galleryPhoto.openStorageIntent(), GALLERY);
+//        Dexter.withActivity(this)
+//                .withPermissions(
+//                        Manifest.permission.READ_EXTERNAL_STORAGE,
+//                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                )
+//                .withListener(new MultiplePermissionsListener() {
+//                    @Override
+//                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+//                        if(report.areAllPermissionsGranted()){
+//                            try {
+//                                galleryPhoto = new FileOpen(getApplicationContext());
+//                                startActivityForResult(galleryPhoto.openStorageIntent(), GALLERY);
+//                            }catch (Exception e){
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+//                        token.continuePermissionRequest();
+//                    }
+//                }).check();
     }
 
     void initRealm() {

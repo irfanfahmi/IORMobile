@@ -117,7 +117,7 @@ public class ReportGuestActivity extends AppCompatActivity {
 
         e_name_rg = (EditText)findViewById(R.id.name_report);
         e_email_rg = (EditText)findViewById(R.id.email_report);
-        e_company_rg = (EditText)findViewById(R.id.email_report);
+        e_company_rg = (EditText)findViewById(R.id.company_report);
         e_unit_rg = (EditText)findViewById(R.id.unit_report);
         e_sub_rg = (EditText)findViewById(R.id.sub_report);
         e_ref_rg = (EditText)findViewById(R.id.ref_report);
@@ -191,10 +191,10 @@ public class ReportGuestActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-//                if(!validasi()){
-//                    Toast.makeText(getApplicationContext(), "Masukan Data Masjid Terlebih Dahulu", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
+                if(!validasi()){
+                    Toast.makeText(getApplicationContext(), "Lengkapi Data Terlebih Dahulu", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 dialogLoading = ProgressDialog.show(ReportGuestActivity.this, "",
                         "Loading. Please wait...", true);
 
@@ -276,8 +276,7 @@ public class ReportGuestActivity extends AppCompatActivity {
                                 params.put("foto_report", getBase64(uri));
                                 params.put("nama_guest", e_name_rg.getText().toString());
                                 params.put("email_guest", e_email_rg.getText().toString());
-                                params.put("company_guest", e_company_rg.
-                                        getText().toString());
+                                params.put("company_guest", e_company_rg.getText().toString());
                                 params.put("unit_guest", e_unit_rg.getText().toString());
                                 params.put("sub_lapor", e_sub_rg.getText().toString());
                                 params.put("ref_lapor", e_ref_rg.getText().toString());
@@ -667,48 +666,42 @@ public class ReportGuestActivity extends AppCompatActivity {
         return true;
     }
 
-//    public boolean validasi() {
-//        boolean valid = true;
-//
-//        final String a = namamasjid.getText().toString();
-//        final String s = address.getText().toString();
-//        final String d = latitude.getText().toString();
-//        final String f = longitude.getText().toString();
-//        final String g = deskripsi.getText().toString();
-//
-//        if (a.isEmpty()) {
-//            namamasjid.setError("Nama Masjid Harus Terisi");
-//            valid = false;
-//        } else {
-//            namamasjid.setError(null);
-//        }
-//
-//        if (s.isEmpty()) {
-//            address.setError("Alamat Harus Terisi");
-//            valid = false;
-//        } else {
-//            address.setError(null);
-//        }
-//        if (d.isEmpty()) {
-//            latitude.setError("Alamat Harus Terisi");
-//            valid = false;
-//        } else {
-//            latitude.setError(null);
-//        }
-//        if (f.isEmpty()) {
-//            longitude.setError("Alamat Harus Terisi");
-//            valid = false;
-//        } else {
-//            longitude.setError(null);
-//        }
-//        if (g.isEmpty()) {
-//            deskripsi.setError("Alamat Harus Terisi");
-//            valid = false;
-//        } else {
-//            deskripsi.setError(null);
-//        }
-//        return valid;
-//
-//    }
+    public boolean validasi() {
+        boolean valid = true;
+
+        final String a = e_name_rg.getText().toString();
+        final String s = e_unit_rg.getText().toString();
+        final String d = e_email_rg.getText().toString();
+        final String f = e_sub_rg.getText().toString();
+
+
+        if (a.isEmpty()) {
+            e_name_rg.setError("Required");
+            valid = false;
+        } else {
+            e_name_rg.setError(null);
+        }
+
+        if (s.isEmpty()) {
+            e_unit_rg.setError("Required");
+            valid = false;
+        } else {
+            e_unit_rg.setError(null);
+        }
+        if (d.isEmpty()) {
+            e_email_rg.setError("Required");
+            valid = false;
+        } else {
+            e_email_rg.setError(null);
+        }
+        if (f.isEmpty()) {
+            e_sub_rg.setError("Required");
+            valid = false;
+        } else {
+            e_sub_rg.setError(null);
+        }
+        return valid;
+
+    }
 
 }

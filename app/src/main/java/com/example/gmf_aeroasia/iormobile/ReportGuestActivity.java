@@ -348,7 +348,7 @@ public class ReportGuestActivity extends AppCompatActivity {
             if(requestCode == GALLERY_REQUEST){
                 galleryPhoto.setFileUri(data.getData());
                 uri = data.getData();
-                String photoPath = galleryPhoto.getPath();
+                String photoPath = galleryPhoto.getPath(this, uri);
                 imageList.add(photoPath);
                 Log.d("Cek Path File", "Isinya uri? "+uri);
                 Log.d("Cek Path File", "Isinya photophat? "+photoPath);

@@ -241,7 +241,7 @@ public class CreateIORActivity extends AppCompatActivity {
                 case GALLERY:
                     galleryPhoto.setFileUri(data.getData());
                     uri = data.getData();
-                    path = galleryPhoto.getPath();
+                    path = galleryPhoto.getPath(this, uri);
                     filepath = path;
                     Log.d("Cek Path Camera", "Isinya photophat? "+filepath);
 
@@ -286,8 +286,12 @@ public class CreateIORActivity extends AppCompatActivity {
     }
 
     void initGalleryPhoto() {
-        galleryPhoto = new FileOpen(this);
-        startActivityForResult(galleryPhoto.openStorageIntent(), GALLERY);
+        try {
+            galleryPhoto = new FileOpen(this);
+            startActivityForResult(galleryPhoto.openStorageIntent(), GALLERY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     void initRealm() {
